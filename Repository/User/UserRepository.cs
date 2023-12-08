@@ -10,7 +10,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using static Model.UsersModels.LoginModel;
+ 
 
 namespace Repository.User
 {
@@ -22,19 +22,30 @@ namespace Repository.User
             _connectionString = connection; 
         }
          
-        public async Task<LoginModelResponse> UserLogin(LoginModel userLogin)
+        public async Task<LoginModelResponse> UserLogin(LoginWithContact userLogin)
+        { 
+                var param = new DynamicParameters(); 
+                 param.Add("@contactNo", userLogin.ContactNo);
+                 param.Add("@otp", userLogin.Otp);
+                return await QueryFirstOrDefaultAsync<LoginModelResponse>(StoreProcedures.UserLogin, param, commandType: CommandType.StoredProcedure);
+       
+        }
+        public async Task<LoginModelResponse> AdminLogin(LoginWithEmail userLogin)
         {
-           
-                var param = new DynamicParameters();
-                param.Add("@EmailId", userLogin.Email);
-                param.Add("@Password", userLogin.Password);
-                param.Add("@contactNo", userLogin.ContactNo);
-                param.Add("@otp", userLogin.Otp);
-                return await QueryFirstOrDefaultAsync<LoginModelResponse>(StoreProcedures.UserLogin, param, commandType: CommandType.StoredProcedure); 
-          
+
+            var param = new DynamicParameters();
+            param.Add("@EmailId", userLogin.Email);
+            param.Add("@Password", userLogin.Password); 
+            return await QueryFirstOrDefaultAsync<LoginModelResponse>(StoreProcedures.UserLogin, param, commandType: CommandType.StoredProcedure);
+
         }
 
-  
+        public async Task<OtpVerificationResponse> Generateopt(string ContactNo)
+        {
+            var param = new DynamicParameters();
+            param.Add("@ContactNo", ContactNo);
+            return await QueryFirstOrDefaultAsync<OtpVerificationResponse>(StoreProcedures.GenerateOtp , param, commandType: CommandType.StoredProcedure);
+        }
     }
 }
 

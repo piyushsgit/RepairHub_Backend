@@ -5,12 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Model.UsersModels.LoginModel;
+ 
 
 namespace Services.User
 {
     public interface IUserService
     {
-        public Task<ApiResponse<LoginModelResponse>> Loginuser(LoginModel model);
+        public Task<ApiPostResponse<LoginModelResponse>> Loginuser(LoginWithContact model);
+        public Task<ApiPostResponse<LoginModelResponse>> AdminLogin(LoginWithEmail model);
+        public Task<OtpVerificationResponse> Generateopt(string ContactNo);
     }
 }
