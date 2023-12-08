@@ -10,7 +10,7 @@ public partial class images
 
     public string ImageName { get; set; } = null!;
 
-    public long ShopId { get; set; }
+    public long ShopId { get; set; }  
 
     public long RequestId { get; set; }
 }
