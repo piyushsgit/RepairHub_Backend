@@ -25,7 +25,7 @@ namespace Common.Helper
 
         //Login
         public const string LoginSuccess = "Logged In Successfully.";
-        public const string LoginError = "Invalid username or password.";
+        public const string LoginError = "Invalid password.";
         public const string InActiveUser = "User is not active, please verify OTP for login.";
         public const string DeletedUser = "User is deleted.";
 
