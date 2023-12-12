@@ -1,4 +1,5 @@
-﻿using Services.User;
+﻿using Services.Shopkeeper;
+using Services.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,8 @@ namespace Services
         {
             var dataDictionary = new Dictionary<Type, Type>
             {
-                 {typeof(IUserService), typeof(UserService)}
+                 {typeof(IUserService), typeof(UserService)},
+                {typeof(IShopKeeperService), typeof(ShopKeeperService)}
             };
             return dataDictionary;
         }

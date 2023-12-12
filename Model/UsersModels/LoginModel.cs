@@ -36,4 +36,15 @@ namespace Model.UsersModels
         public string message { get; set; }
         
     }
+    public class ForgotPassword {
+        public int Type { get; set; }
+        public string? Email { get; set; }
+        public string? contact { get; set; }
+        public string? Otp { get; set; }
+        public string? NewPassword { get; set; }
+    }
+    public class Message
+    {
+        public string message { get; set; }
+    }
 }
