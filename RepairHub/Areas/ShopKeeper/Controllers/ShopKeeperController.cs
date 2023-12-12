@@ -18,7 +18,7 @@ namespace RepairHub.Areas.ShopKeeper.Controllers
             this.shopKeeperService = shopKeeperService;
         }
         [HttpGet]
-        public Task<List<ShopDetails>> GeShopDetails()
+        public Task<List<ShopDetails>> GetShopDetails()
         {
             return  shopKeeperService.GeShopDetails();
         }
