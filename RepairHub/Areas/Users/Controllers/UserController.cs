@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Model.UsersModels;
 using Services.User;
- 
+
 
 namespace RepairHub.Areas.Users.Controllers
 {
@@ -11,16 +11,16 @@ namespace RepairHub.Areas.Users.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-      private readonly IUserService UserService;
+        private readonly IUserService UserService;
 
         public UserController(IUserService authenticateService)
         {
             this.UserService = authenticateService;
         }
 
-        [HttpPost] 
+        [HttpPost]
         public async Task<ApiPostResponse<LoginModelResponse>> Login(LoginWithContact login)
-        { 
+        {
             return await UserService.Loginuser(login);
         }
 
@@ -28,6 +28,12 @@ namespace RepairHub.Areas.Users.Controllers
         public async Task<OtpVerificationResponse> GenereateOtp(string ContactNo)
         {
             return await UserService.Generateopt(ContactNo);
+        }
+
+        [HttpPost]
+        public async Task<ApiPostResponse<int>> RegisterUser([FromForm] RegistrationModel regData)
+        {
+            return await UserService.RegisterUser(regData);
         }
     }
 }

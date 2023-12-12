@@ -16,7 +16,7 @@ namespace Common.Helper
         public const string DataNotFound = "Data not found.";
         public const string ImageUploadSuccess = "Images uploded successfully.";
         public const string DeletedSuccess = "Deleted successfully.";
-         
+
         // User
         public const string InvalidEmailPass = "Invalid email id or password";
         public const string InvalidEmailId = "Email id is not valid.";
@@ -47,6 +47,8 @@ namespace Common.Helper
         //Ground
         public const string InvalidSport = "Invalid Sport.";
         public const string GroundNotBelongs = "Ground not belongs to login vendor.";
+
+        
 
     }
 }
