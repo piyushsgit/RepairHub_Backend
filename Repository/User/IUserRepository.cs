@@ -1,4 +1,5 @@
 ﻿using Data;
+using Model.dbModels;
 using Model.UsersModels;
 using System;
 using System.Collections.Generic;
@@ -13,5 +14,7 @@ namespace Repository.User
         public Task<LoginModelResponse> UserLogin(LoginWithContact userLogin);
         public Task<LoginModelResponse> AdminLogin(LoginWithEmail userLogin);
         public Task<OtpVerificationResponse> Generateopt(string ContactNo);
+        public Task<Message> ForgotPassword(ForgotPassword forgot);
+
     }
 }   
