@@ -1,9 +1,10 @@
 {
   "ExpandedNodes": [
     "",
+    "\\RepairHub",
     "\\Services",
     "\\Services\\User"
   ],
-  "SelectedNode": "\\Services\\User\\UserService.cs",
+  "SelectedNode": "\\RepairHub\\Program.cs",
   "PreviewInSolutionExplorer": false
 }

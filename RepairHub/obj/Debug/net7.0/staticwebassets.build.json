@@ -1,11 +1,37 @@
 {
   "Version": 1,
-  "Hash": "DKZc4F8hDQuuKEvJUE57VOmRZJEPkokxR8BjAoMlwK8=",
+  "Hash": "fTOOqJS33FSfWxh2rGcJVZCXxWdf5MWBMqW7OqjGKCE=",
   "Source": "RepairHub",
   "BasePath": "_content/RepairHub",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "RepairHub\\wwwroot",
+      "Source": "RepairHub",
+      "ContentRoot": "C:\\Users\\sit393\\Desktop\\RepairHub\\RepairHub_Backend\\RepairHub\\wwwroot\\",
+      "BasePath": "_content/RepairHub",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\sit393\\Desktop\\RepairHub\\RepairHub_Backend\\RepairHub\\wwwroot\\swagger-ui\\SwaggerDark.css",
+      "SourceId": "RepairHub",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\sit393\\Desktop\\RepairHub\\RepairHub_Backend\\RepairHub\\wwwroot\\",
+      "BasePath": "_content/RepairHub",
+      "RelativePath": "swagger-ui/SwaggerDark.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\swagger-ui\\SwaggerDark.css"
+    }
+  ]
 }

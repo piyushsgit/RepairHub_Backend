@@ -1,14 +1,21 @@
-﻿using Common.Helper;
+﻿using Common.CommonMethods;
+using Common.Helper;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Model;
+using Model.AppSettingsJason;
 using Model.UsersModels;
+using Repository.Shopkeeper;
 using Repository.User;
 using System.Data;
+using System.Diagnostics.Metrics;
 using System.IdentityModel.Tokens.Jwt;
+using System.Numerics;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text;
+using static System.Net.WebRequestMethods;
 
 
 namespace Services.User
@@ -16,13 +23,15 @@ namespace Services.User
     public class UserService : IUserService
     {
         private IUserRepository _accountRepository;
-        public readonly IOptions<AppSettings> _connectionString;
+        private readonly INonStaticCommonMethods _nonStatic;
+        public  IConfiguration _connectionString;
 
         #region Constructors
-        public UserService(IOptions<AppSettings> connection, IUserRepository accountRepository)
+        public UserService(IConfiguration connection, IUserRepository accountRepository,INonStaticCommonMethods nonStatic)
         {
             _connectionString = connection;
             _accountRepository = accountRepository;
+            _nonStatic = nonStatic;
         }
         #endregion
 
@@ -31,19 +40,13 @@ namespace Services.User
             var res = new ApiPostResponse<LoginModelResponse>();
             LoginModelResponse loginModelResponse = new LoginModelResponse();
             loginModelResponse = await _accountRepository.UserLogin(model);
-            if (loginModelResponse.message == "please enter valid credentials")
-            {
-                res.Success = false;
-                res.Message = ErrorMessages.LoginError;
-                return res;
-            }
-            else if (loginModelResponse.message == "please enter your otp")
+            if (loginModelResponse.message == "email not exists" || loginModelResponse.message == "ContactNo not exists"|| loginModelResponse.message == "Otp Expired" || loginModelResponse.message == "please enter your otp")
             {
                 res.Success = false;
                 res.Message = loginModelResponse.message;
                 return res;
-            }
-            else if (loginModelResponse != null && loginModelResponse.message != "please enter valid credentials")
+            } 
+            else 
             {
                 res.Data = new LoginModelResponse
                 {
@@ -52,13 +55,7 @@ namespace Services.User
                 res.Success = true;
                 res.Message = ErrorMessages.LoginSuccess;
                 return res;
-            }
-            else
-            {
-                res.Success = false;
-                res.Message = ErrorMessages.LoginError;
-                return res;
-            }
+            } 
         }
         public async Task<ApiPostResponse<LoginModelResponse>> AdminLogin(LoginWithEmail model)
         {
@@ -94,7 +91,7 @@ namespace Services.User
         public string Login(string Data, string Role)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_connectionString.Value.JWT_Secret);
+            var key = Encoding.ASCII.GetBytes(_nonStatic.GetConfigurationValue(AppSettingsJason.AppSettings.ConnectionString));
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
@@ -102,12 +99,18 @@ namespace Services.User
                     new Claim(ClaimTypes.Name, Data),
                     new Claim(ClaimTypes.Role, Role)
                 }),
-                Expires = DateTime.UtcNow.AddHours(1),
+                Expires = DateTime.UtcNow.AddMinutes(Convert.ToInt32(_nonStatic.GetConfigurationValue(AppSettingsJason.JwtToken.TimeOutMin))),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
             return tokenString;
+        }
+
+        public async Task<Message> ForgotPassword(ForgotPassword forgot)
+        { 
+            var Message = await _accountRepository.ForgotPassword(forgot); 
+            return await _accountRepository.ForgotPassword(forgot);
         }
 
         //public static string GetHash(string input)

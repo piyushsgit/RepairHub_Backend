@@ -1,12 +1,5 @@
-﻿using Common.Helper;
-using Model.UsersModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
- 
-
+﻿using Common.Helper; 
+using Model.UsersModels; 
 namespace Services.User
 {
     public interface IUserService
@@ -14,5 +7,7 @@ namespace Services.User
         public Task<ApiPostResponse<LoginModelResponse>> Loginuser(LoginWithContact model);
         public Task<ApiPostResponse<LoginModelResponse>> AdminLogin(LoginWithEmail model);
         public Task<OtpVerificationResponse> Generateopt(string ContactNo);
+        public Task<Message> ForgotPassword(ForgotPassword forgot);
+
     }
 }
