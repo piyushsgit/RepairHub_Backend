@@ -228,12 +228,9 @@ C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\obj\Debug\net7.0\R
 C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\obj\Debug\net7.0\RepairHub.AssemblyInfo.cs
 C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\obj\Debug\net7.0\RepairHub.csproj.CoreCompileInputs.cache
 C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\obj\Debug\net7.0\RepairHub.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\obj\Debug\net7.0\RepairHub.dll
-C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\obj\Debug\net7.0\refint\RepairHub.dll
-C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\obj\Debug\net7.0\RepairHub.pdb
-C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\obj\Debug\net7.0\RepairHub.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\bin\Debug\net7.0\appsettings.Development.json
 C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\bin\Debug\net7.0\appsettings.json
+C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\bin\Debug\net7.0\RepairHub.staticwebassets.runtime.json
 C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\bin\Debug\net7.0\RepairHub.exe
 C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\bin\Debug\net7.0\RepairHub.deps.json
 C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\bin\Debug\net7.0\RepairHub.runtimeconfig.json
@@ -244,6 +241,10 @@ C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\bin\Debug\net7.0\A
 C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\bin\Debug\net7.0\Dapper.dll
 C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\bin\Debug\net7.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\bin\Debug\net7.0\Microsoft.Data.SqlClient.dll
+C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.SqlServer.dll
 C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\bin\Debug\net7.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\bin\Debug\net7.0\Microsoft.Extensions.Options.dll
 C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\bin\Debug\net7.0\Microsoft.Extensions.Primitives.dll
@@ -298,5 +299,8 @@ C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\obj\Debug\net7.0\s
 C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\obj\Debug\net7.0\staticwebassets.development.json
 C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\obj\Debug\net7.0\scopedcss\bundle\RepairHub.styles.css
 C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\obj\Debug\net7.0\RepairHub.csproj.CopyComplete
+C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\obj\Debug\net7.0\RepairHub.dll
+C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\obj\Debug\net7.0\refint\RepairHub.dll
+C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\obj\Debug\net7.0\RepairHub.pdb
 C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\obj\Debug\net7.0\RepairHub.genruntimeconfig.cache
 C:\Users\sit393\Desktop\RepairHub\RepairHub_Backend\RepairHub\obj\Debug\net7.0\ref\RepairHub.dll

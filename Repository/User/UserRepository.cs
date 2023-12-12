@@ -1,25 +1,20 @@
-﻿using Common.Helper;
+﻿using Common.CommonMethods;
+using Common.Helper;
 using Dapper;
-using Data; 
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using Model; 
-using Model.UsersModels; 
+using Data;
+using Model.UsersModels;
 using System.Data;
-using System.IdentityModel.Tokens.Jwt; 
-using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
- 
+
 
 namespace Repository.User
 {
     public class UserRepository : BaseRepository, IUserRepository
     {
-        public readonly IOptions<AppSettings> _connectionString;
-        public UserRepository(IOptions<AppSettings> connection) : base(connection)
-        {
-            _connectionString = connection; 
+        private readonly INonStaticCommonMethods nonStatic;
+
+        public UserRepository(INonStaticCommonMethods config) : base(config) 
+        { 
+            this.nonStatic = nonStatic;
         }
          
         public async Task<LoginModelResponse> UserLogin(LoginWithContact userLogin)
@@ -45,6 +40,19 @@ namespace Repository.User
             var param = new DynamicParameters();
             param.Add("@ContactNo", ContactNo);
             return await QueryFirstOrDefaultAsync<OtpVerificationResponse>(StoreProcedures.GenerateOtp , param, commandType: CommandType.StoredProcedure);
+        }
+ 
+
+        public async Task<Message> ForgotPassword(ForgotPassword forgot)
+        {
+            var param = new DynamicParameters();
+            param.Add("@Type", forgot.Type);
+            param.Add("@Email", forgot.Email);
+            param.Add("@MobileNo", forgot.contact);
+            param.Add("@OTP", forgot.Otp);
+            param.Add("@NewPassword", forgot.NewPassword);
+ 
+            return await QueryFirstOrDefaultAsync<Message>(StoreProcedures.ForgotPassword, param, commandType: CommandType.StoredProcedure);
         }
     }
 }

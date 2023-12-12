@@ -1,4 +1,5 @@
 ﻿
+using Repository.Shopkeeper;
 using Repository.User;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,8 @@ namespace Repository
         {
             var types = new Dictionary<Type,Type>
             {
-                { typeof(IUserRepository), typeof(UserRepository)}
+                { typeof(IUserRepository), typeof(UserRepository)},
+                { typeof(IShopkeeperRepo), typeof(ShopkeeperRepo)}
             };
             return types;
         }
