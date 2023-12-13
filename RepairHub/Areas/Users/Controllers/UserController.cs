@@ -24,7 +24,7 @@ namespace RepairHub.Areas.Users.Controllers
             return await UserService.Loginuser(login);
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<OtpVerificationResponse> GenereateOtpForContact(string ContactNo)
         {
             return await UserService.Generateopt(ContactNo);

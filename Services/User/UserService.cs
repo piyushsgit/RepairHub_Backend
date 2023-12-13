@@ -40,7 +40,8 @@ namespace Services.User
             var res = new ApiPostResponse<LoginModelResponse>();
             LoginModelResponse loginModelResponse = new LoginModelResponse();
             loginModelResponse = await _accountRepository.UserLogin(model);
-            if (loginModelResponse.message == "email not exists" || loginModelResponse.message == "ContactNo not exists"|| loginModelResponse.message == "Otp Expired" || loginModelResponse.message == "please enter your otp")
+            if (loginModelResponse.message == "email not exists" || loginModelResponse.message == "ContactNo not exists"|| loginModelResponse.message == "Otp Expired" || loginModelResponse.message == "Inccorect Otp")
+
             {
                 res.Success = false;
                 res.Message = loginModelResponse.message;

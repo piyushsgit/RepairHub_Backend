@@ -31,7 +31,11 @@ if (app.Environment.IsDevelopment())
         options.InjectStylesheet("/swagger-ui/SwaggerDark.css");
     });
 }
-
+app.UseCors(builder => builder
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .SetIsOriginAllowed((host) => true)
+            .AllowCredentials());
 app.UseAuthorization();
 app.UseStaticFiles();
 app.MapControllers();
