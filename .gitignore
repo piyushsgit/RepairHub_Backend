@@ -361,3 +361,32 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/RepairHub/bin/Debug/net7.0/Common.dll
+/RepairHub/bin/Debug/net7.0/Common.pdb
+/RepairHub/bin/Debug/net7.0/Model.dll
+/RepairHub/bin/Debug/net7.0/Model.pdb
+/RepairHub/bin/Debug/net7.0/RepairHub.dll
+/RepairHub/bin/Debug/net7.0/RepairHub.exe
+/RepairHub/bin/Debug/net7.0/RepairHub.pdb
+/RepairHub/bin/Debug/net7.0/Repository.dll
+/RepairHub/bin/Debug/net7.0/Repository.pdb
+/RepairHub/bin/Debug/net7.0/Services.dll
+/RepairHub/bin/Debug/net7.0/Services.pdb
+/.vs/RepairHub/DesignTimeBuild/.dtbcache.v2
+/RepairHub/obj/Debug/net7.0/apphost.exe
+/Services/obj/Debug/net7.0/Services.csproj.AssemblyReference.cache
+/Services/obj/Debug/net7.0/Services.assets.cache
+/Services/obj/Debug/net7.0/Services.GeneratedMSBuildEditorConfig.editorconfig
+/Repository/obj/Debug/net7.0/Repository.assets.cache
+/RepairHub/obj/Debug/net7.0/RepairHub.GeneratedMSBuildEditorConfig.editorconfig
+/Model/obj/Debug/net7.0/Model.assets.cache
+/.vs/RepairHub/v17/.suo
+/Common/obj/Debug/net7.0/Common.assets.cache
+/Common/obj/Debug/net7.0/Common.csproj.AssemblyReference.cache
+/Common/obj/Debug/net7.0/Common.GeneratedMSBuildEditorConfig.editorconfig
+/Model/obj/Debug/net7.0/Model.csproj.AssemblyReference.cache
+/Model/obj/Debug/net7.0/Model.GeneratedMSBuildEditorConfig.editorconfig
+/RepairHub/obj/Debug/net7.0/RepairHub.assets.cache
+/RepairHub/obj/Debug/net7.0/RepairHub.csproj.AssemblyReference.cache
+/Repository/obj/Debug/net7.0/Repository.csproj.AssemblyReference.cache
+/Repository/obj/Debug/net7.0/Repository.GeneratedMSBuildEditorConfig.editorconfig
