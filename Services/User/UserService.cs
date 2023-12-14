@@ -80,7 +80,7 @@ namespace Services.User
                 return res;
             }
         }
-        public async Task<OtpVerificationResponse> Generateopt(string? ContactNo, Email req)
+        public async Task<OtpVerificationResponse> Generateopt(string? ContactNo, Email? req)
         {
             if (string.IsNullOrEmpty(req.EmailId))
             { 

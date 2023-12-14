@@ -6,7 +6,7 @@ namespace Services.User
     {
         public Task<ApiPostResponse<LoginModelResponse>> Loginuser(LoginWithContact model);
         public Task<ApiPostResponse<LoginModelResponse>> AdminLogin(LoginWithEmail model);
-        public Task<OtpVerificationResponse> Generateopt(string? ContactNo, Email email);
+        public Task<OtpVerificationResponse> Generateopt(string? ContactNo, Email? email);
         public Task<Message> ForgotPassword(ForgotPassword forgot); 
       
 
