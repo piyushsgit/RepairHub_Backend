@@ -26,12 +26,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(options =>
     {
         options.DefaultModelsExpandDepth(-1);
-        options.DocExpansion(DocExpansion.None);
- 
+        options.DocExpansion(DocExpansion.None); 
         options.InjectStylesheet("/swagger-ui/SwaggerDark.css");
     });
 }
-
+app.UseCors(builder => builder
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .SetIsOriginAllowed((host) => true)
+            .AllowCredentials());
 app.UseAuthorization();
 app.UseStaticFiles();
 app.MapControllers();
