@@ -361,3 +361,31 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/RepairHub/bin/Debug/net7.0/Common.dll
+/.gitignore
+/RepairHub/bin/Debug/net7.0/Common.pdb
+/.vs/RepairHub/v17/.suo
+/RepairHub/bin/Debug/net7.0/Model.dll
+/RepairHub/bin/Debug/net7.0/Services.pdb
+/RepairHub/bin/Debug/net7.0/Common.dll
+/RepairHub/bin/Debug/net7.0/RepairHub.dll
+/RepairHub/bin/Debug/net7.0/Model.pdb
+/RepairHub/bin/Debug/net7.0/RepairHub.pdb
+/RepairHub/bin/Debug/net7.0/Repository.dll
+/RepairHub/bin/Debug/net7.0/Services.dll
+/RepairHub/bin/Debug/net7.0/Repository.pdb
+/RepairHub/obj/Debug/net7.0/RepairHub.csproj.AssemblyReference.cache
+/Services/obj/Debug/net7.0/Services.csproj.AssemblyReference.cache
+/RepairHub/obj/Debug/net7.0/RepairHub.csproj.AssemblyReference.cache
+/Services/obj/Debug/net7.0/Services.csproj.AssemblyReference.cache
+/RepairHub/obj/Debug/net7.0/RepairHub.csproj.AssemblyReference.cache
+/Services/obj/Debug/net7.0/Services.csproj.AssemblyReference.cache
+/RepairHub/obj/Debug/net7.0/RepairHub.csproj.AssemblyReference.cache
+/Services/obj/Debug/net7.0/Services.csproj.AssemblyReference.cache
+/RepairHub/obj/Debug/net7.0/RepairHub.csproj.AssemblyReference.cache
+/Services/obj/Debug/net7.0/Services.csproj.AssemblyReference.cache
+/Services/obj/Debug/net7.0/Services.csproj.AssemblyReference.cache
+/RepairHub/obj/Debug/net7.0/RepairHub.csproj.AssemblyReference.cache
+/RepairHub/obj/Debug/net7.0/RepairHub.csproj.AssemblyReference.cache
+/RepairHub/obj/Debug/net7.0/RepairHub.csproj.AssemblyReference.cache
+/Services/obj/Debug/net7.0/Services.csproj.AssemblyReference.cache
