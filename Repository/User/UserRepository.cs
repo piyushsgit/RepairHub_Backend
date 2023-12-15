@@ -35,10 +35,11 @@ namespace Repository.User
 
         }
 
-        public async Task<OtpVerificationResponse> Generateopt(string ContactNo)
+        public async Task<OtpVerificationResponse> Generateopt(string? ContactNo,string? email)
         {
             var param = new DynamicParameters();
             param.Add("@ContactNo", ContactNo);
+            param.Add("@email", email);
             return await QueryFirstOrDefaultAsync<OtpVerificationResponse>(StoreProcedures.GenerateOtp , param, commandType: CommandType.StoredProcedure);
         }
  
