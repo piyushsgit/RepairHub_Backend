@@ -6,7 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
- 
+
+
 namespace Repository.User
 {
     public interface IUserRepository 
@@ -16,5 +17,7 @@ namespace Repository.User
         public Task<OtpVerificationResponse> Generateopt(string? ContactNo,string? email);
         public Task<Message> ForgotPassword(ForgotPassword forgot);
 
+
+        public Task<int> RegisterUser(RegistrationModel userReg);
     }
 }   

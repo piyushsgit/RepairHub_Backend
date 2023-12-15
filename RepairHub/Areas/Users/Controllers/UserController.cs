@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Model.UsersModels;
 using Services.User;
- 
+
 
 namespace RepairHub.Areas.Users.Controllers
 {
@@ -11,7 +11,7 @@ namespace RepairHub.Areas.Users.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-      private readonly IUserService UserService;
+        private readonly IUserService UserService;
 
         public UserController(IUserService authenticateService)
         {
@@ -42,6 +42,14 @@ namespace RepairHub.Areas.Users.Controllers
         {
             return await UserService.ForgotPassword(forgot);
         }
+
+
+        [HttpPost]
+        public async Task<ApiPostResponse<int>> RegisterUser(RegistrationModel regData)
+        {
+            return await UserService.RegisterUser(regData);
+        }
+
         [HttpPost]
         public async Task<OtpVerificationResponse> SendOtpForEmailVerification(string EmailId)
         {
@@ -66,5 +74,6 @@ namespace RepairHub.Areas.Users.Controllers
             email.EmailId = EmailId;
             return await UserService.Generateopt(null, email);
         } 
+
     }
 }

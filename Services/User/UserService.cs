@@ -3,6 +3,10 @@ using Common.Helper;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Configuration;
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+
 using Microsoft.IdentityModel.Tokens;
 using MimeKit;
 using Model.AppSettingsJason;
@@ -165,6 +169,78 @@ namespace Services.User
         //        return builder.ToString();
         //    }
         //}
+
+
+        public async Task<ApiPostResponse<int>> RegisterUser(RegistrationModel regData)
+        {
+            ApiPostResponse<int> response = new ApiPostResponse<int>();
+            var img = regData.Image;
+
+            string imgpath = Path.Combine(Directory.GetCurrentDirectory(), "Asset/Images");
+            string destinationPath = Path.Combine(imgpath, img.FileName);
+            regData.ProfileImage = img.FileName;
+
+            using (var stream = new FileStream(destinationPath, FileMode.Create))
+
+            {
+                img.CopyToAsync(stream);
+            }
+            //var Id = regData.Id;
+            var FirstName = regData.FirstName;
+            var LastName = regData.LastName;
+            var ContactNo = regData.ContactNo;
+            var EmailId = regData.EmailId;
+            var UserTypeId = regData.UserTypeId;
+            var CreatedBy = regData.CreatedBy;
+            var ModifiedBy = regData.ModifiedBy;
+            var Password = regData.Password;
+            var ProfileImage = regData.ProfileImage;
+            var ShopName = regData.ShopName;
+            var ShopOwner = regData.ShopOwnerName;
+            var AddharNumber = regData.AddharNumber;
+            var PanNumber = regData.PanNumber;
+            var shopDescription = regData.ShopDescription;
+            var ShopRepairType = regData.ShopRepairType;
+            var Since = regData.Since;
+            var AsociateWith = regData.AsociateWith;
+            var Country = regData.Country;
+            var State = regData.State;
+            var City = regData.City;
+            var Address = regData.Address;
+            var Rating = regData.Rating;
+            var Area = regData.Area;
+            var AddressType = regData.AddressType;
+            var AccountNo = regData.AccountNo;
+            var AccountHolderName = regData.AccountHolderName;
+            var BankName = regData.BankName;
+            var IFSC_Code = regData.IFSC_Code;
+            var UPI_Detail = regData.UPI_Detail;
+
+
+
+
+            var result = await _accountRepository.RegisterUser(regData);
+            if (result == 3) {
+                response.Data = result;
+                response.Success = true;
+                response.Message = ErrorMessages.ShopkeeperRegistrationSuccess;
+            }
+           
+            else if(result == 1){
+                response.Data = result;
+                response.Success = true;
+                response.Message = ErrorMessages.CustomerRegistrationSuccess;
+            }
+            else
+            {
+                response.Success = false;
+                response.Message = "Failure";
+            }
+            return response;
+
+        }
+
         #endregion
+
     }
 }

@@ -10,5 +10,6 @@ namespace Services.User
         public Task<Message> ForgotPassword(ForgotPassword forgot); 
       
 
+        public Task<ApiPostResponse<int>> RegisterUser(RegistrationModel regData);
     }
 }

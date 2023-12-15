@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Identity.Client;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,7 @@ namespace Common.Helper
         public const string DataNotFound = "Data not found.";
         public const string ImageUploadSuccess = "Images uploded successfully.";
         public const string DeletedSuccess = "Deleted successfully.";
-         
+
         // User
         public const string InvalidEmailPass = "Invalid email id or password";
         public const string InvalidEmailId = "Email id is not valid.";
@@ -33,6 +34,7 @@ namespace Common.Helper
         //Registration
         public const string PhoneNoExist = "Phone no already exist with another user.";
         public const string CustomerRegistrationSuccess = "User registration successfully,Please verify your OTP";
+        public const string ShopkeeperRegistrationSuccess = "Shopkeeper  registration successfully, Please verify your OTP";
         public const string VendorRegistrationSuccess = "Vendor registration successfully.";
         public const string InvalidUser = "Invalid User.";
         public const string OTPExpired = "OTP expired.";
@@ -47,6 +49,9 @@ namespace Common.Helper
         //Ground
         public const string InvalidSport = "Invalid Sport.";
         public const string GroundNotBelongs = "Ground not belongs to login vendor.";
+
+      
+        
 
     }
 }
