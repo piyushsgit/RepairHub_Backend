@@ -41,7 +41,7 @@ namespace RepairHub.Areas.Users.Controllers
         }
 
         [HttpPost]
-        public async Task<ApiPostResponse<int>> RegisterUser([FromForm] RegistrationModel regData)
+        public async Task<ApiPostResponse<int>> RegisterUser(RegistrationModel regData)
         {
             return await UserService.RegisterUser(regData);
         }

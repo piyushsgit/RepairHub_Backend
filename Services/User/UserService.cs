@@ -133,33 +133,7 @@ namespace Services.User
         //        return builder.ToString();
         //    }
         //}
-              public async Task<ApiPostResponse<LoginModelResponse>> AdminLogin(LoginWithEmail model)
-        {
-            var res = new ApiPostResponse<LoginModelResponse>();
-            LoginModelResponse loginModelResponse = new LoginModelResponse();
-            loginModelResponse = await _accountRepository.AdminLogin(model);
-            if (loginModelResponse.message == "please enter valid credentials")
-            {
-                res.Success = false;
-                res.Message = ErrorMessages.LoginError;
-                return res;
-            }
-            else if (loginModelResponse.message == "email not exists")
-            {
-                res.Success = false;
-                res.Message = loginModelResponse.message;
-                return res;
-            }
-            {
-                res.Data = new LoginModelResponse
-                {
-                    JwdToken = Login(model.Email, "Admin")
-                };
-                res.Success = true;
-                res.Message = ErrorMessages.LoginSuccess;
-                return res;
-            }
-        }
+
         public async Task<ApiPostResponse<int>> RegisterUser(RegistrationModel regData)
         {
             ApiPostResponse<int> response = new ApiPostResponse<int>();
@@ -209,10 +183,16 @@ namespace Services.User
 
 
             var result = await _accountRepository.RegisterUser(regData);
-            if (result == 3) { 
+            if (result == 3) {
                 response.Data = result;
                 response.Success = true;
-                response.Message = "Success";
+                response.Message = ErrorMessages.ShopkeeperRegistrationSuccess;
+            }
+           
+            else if(result == 1){
+                response.Data = result;
+                response.Success = true;
+                response.Message = ErrorMessages.CustomerRegistrationSuccess;
             }
             else
             {
