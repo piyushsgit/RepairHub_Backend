@@ -1,21 +1,19 @@
-﻿using Services.Shopkeeper;
-using Services.User;
+﻿using Common.CommonMethods;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services
+namespace Common
 {
-    public class RegisterService
+    public class RegisterCommon
     {
         public static Dictionary<Type, Type> GetTypes()
         {
             var dataDictionary = new Dictionary<Type, Type>
             {
-                 {typeof(IUserService), typeof(UserService)},
-                {typeof(IShopKeeperService), typeof(ShopKeeperService)}
+                 {typeof(INonStaticCommonMethods), typeof(NonStaticCommonMethods)}
             };
             return dataDictionary;
         }

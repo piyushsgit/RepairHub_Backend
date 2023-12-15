@@ -8,12 +8,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Model.dbModels;
 
-public partial class OrderDetails
+public partial class AddressTypes
 {
     [Key]
-    public long ID { get; set; }
+    public int Id { get; set; }
 
-    public long OrderId { get; set; }
-
-    public int PaymentStatus { get; set; }
+    [StringLength(50)]
+    [Unicode(false)]
+    public string? AdressType { get; set; }
 }

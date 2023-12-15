@@ -8,39 +8,28 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Model.dbModels;
 
-public partial class Address
+public partial class User
 {
     [Key]
     public long Id { get; set; }
 
-    public long UserId { get; set; }
-
-    public long? ShopId { get; set; }
+    [StringLength(100)]
+    public string First_Name { get; set; } = null!;
 
     [StringLength(100)]
-    [Unicode(false)]
-    public string Country { get; set; } = null!;
+    public string Last_Name { get; set; } = null!;
 
-    [StringLength(100)]
-    [Unicode(false)]
-    public string State { get; set; } = null!;
-
-    [StringLength(100)]
-    [Unicode(false)]
-    public string City { get; set; } = null!;
-
-    [Column("Address")]
-    [Unicode(false)]
-    public string? Address1 { get; set; }
-
-    [Unicode(false)]
-    public string Area { get; set; } = null!;
+    [StringLength(20)]
+    public string ContactNo { get; set; } = null!;
 
     [StringLength(255)]
-    [Unicode(false)]
-    public string? AddressType { get; set; }
+    public string EmailId { get; set; } = null!;
 
-    public bool? IsDelete { get; set; }
+    public long UserTypeId { get; set; }
+
+    public bool IsActive { get; set; }
+
+    public bool IsDeleted { get; set; }
 
     public long? DeletedBy { get; set; }
 
@@ -56,4 +45,18 @@ public partial class Address
 
     [Column(TypeName = "datetime")]
     public DateTime? ModifiedOn { get; set; }
+
+    public int? otp { get; set; }
+
+    [Column(TypeName = "datetime")]
+    public DateTime? otpExpiryTime { get; set; }
+
+    [StringLength(100)]
+    [Unicode(false)]
+    public string? profileImage { get; set; }
+
+    [StringLength(100)]
+    public string? password { get; set; }
+
+    public bool? IsVarified { get; set; }
 }

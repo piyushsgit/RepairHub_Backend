@@ -20,6 +20,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[AddressTypes]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[images]",
          "ObjectType": 0
       },
@@ -41,6 +45,10 @@
       },
       {
          "Name": "[dbo].[ShopDetails]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ShopTypes]",
          "ObjectType": 0
       },
       {
