@@ -45,6 +45,12 @@ namespace Model.UsersModels
     }
     public class Message
     {
-        public string message { get; set; }
+        public string? message { get; set; }
+    }
+
+    public class Email
+    {
+        public int? type { get; set; }
+        public string? EmailId { get; set;}
     }
 }

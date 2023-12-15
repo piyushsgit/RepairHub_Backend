@@ -13,7 +13,7 @@ namespace Repository.User
     {
         public Task<LoginModelResponse> UserLogin(LoginWithContact userLogin);
         public Task<LoginModelResponse> AdminLogin(LoginWithEmail userLogin);
-        public Task<OtpVerificationResponse> Generateopt(string ContactNo);
+        public Task<OtpVerificationResponse> Generateopt(string? ContactNo,string? email);
         public Task<Message> ForgotPassword(ForgotPassword forgot);
 
     }
