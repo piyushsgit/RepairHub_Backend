@@ -18,9 +18,9 @@ namespace RepairHub.Areas.Users.Controllers
             this.UserService = authenticateService;
         }
 
-        [HttpPost] 
+        [HttpPost]
         public async Task<ApiPostResponse<LoginModelResponse>> LoginWithContact(LoginWithContact login)
-        { 
+        {
             return await UserService.Loginuser(login);
         }
 
@@ -33,10 +33,10 @@ namespace RepairHub.Areas.Users.Controllers
         [HttpPost]
         public async Task<OtpVerificationResponse> GenereateOtpForContact(string ContactNo)
         {
-            return await UserService.Generateopt(ContactNo,null);
+            return await UserService.Generateopt(ContactNo, null);
         }
-       
-       
+
+
         [HttpPost]
         public async Task<Message> ForgotPassword(ForgotPassword forgot)
         {
@@ -45,7 +45,7 @@ namespace RepairHub.Areas.Users.Controllers
 
 
         [HttpPost]
-        public async Task<ApiPostResponse<int>> RegisterUser(RegistrationModel regData)
+        public async Task<ApiPostResponse<int>> RegisterUser([FromForm] RegistrationUserModel regData)
         {
             return await UserService.RegisterUser(regData);
         }

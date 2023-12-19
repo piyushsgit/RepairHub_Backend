@@ -13,7 +13,7 @@ namespace Model.UsersModels
 {
     public class RegistrationModel
     {
- 
+
         public string? FirstName { get; set; }
 
         public string? LastName { get; set; }
@@ -23,19 +23,21 @@ namespace Model.UsersModels
         public string? EmailId { get; set; }
 
         public int? UserTypeId { get; set; }
-       // public bool IsShopKeeper { get; set; } = false;
+        // public bool IsShopKeeper { get; set; } = false;
         public long? CreatedBy { get; set; }
 
-        public string? ModifiedBy { get; set; }
         public string? Password { get; set; }
 
         public string? ProfileImage { get; set; }
 
-        public IFormFile Image { get; set; }
+        public IFormFile? image { get; set; }
 
         public string? ShopName { get; set; }
 
         public string? ShopOwnerName { get; set; }
+
+        public List<string>? ShopImageName { get; set; }
+        public IFormFile[]? ShopImage { get; set; }
 
         public string? AddharNumber { get; set; }
 
@@ -57,7 +59,6 @@ namespace Model.UsersModels
 
         public string? Address { get; set; }
 
-        public decimal? Rating { get; set; }
 
         public string? Area { get; set; }
 
@@ -65,7 +66,7 @@ namespace Model.UsersModels
 
         public string? AccountNo { get; set; }
 
-        public string? AccountHolderName { get; set;}
+        public string? AccountHolderName { get; set; }
 
         public string? BankName { get; set; }
 
@@ -78,5 +79,30 @@ namespace Model.UsersModels
 
     }
 
-    
+    public class RegistrationUserModel
+    {
+
+        public string? FirstName { get; set; }
+
+        public string? LastName { get; set; }
+
+        public string? ContactNo { get; set; }
+
+        public string? EmailId { get; set; }
+
+        public string? Password { get; set; }
+
+        public long? CreatedBy { get; set; }
+
+        public string? ProfileImage { get; set; }
+
+        public IFormFile? image { get; set; }
+
+    }
+
+
+
+
+
+
 }

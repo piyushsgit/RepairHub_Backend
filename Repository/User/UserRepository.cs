@@ -12,6 +12,8 @@ namespace Repository.User
     {
         private readonly INonStaticCommonMethods nonStatic;
 
+
+         
         public UserRepository(INonStaticCommonMethods config) : base(config) 
         { 
             this.nonStatic = nonStatic;
@@ -65,7 +67,6 @@ namespace Repository.User
             parameters.Add("@EmailId",userReg.EmailId);
             parameters.Add("@UserTypeId", userReg.UserTypeId);
             parameters.Add("@CreatedBy", userReg.CreatedBy);
-            parameters.Add("@ModifiedBy", userReg.ModifiedBy);
             parameters.Add("@Password", userReg.Password);
             parameters.Add("@ProfileImage", userReg.ProfileImage);
             parameters.Add("@ShopName", userReg.ShopName);
@@ -80,7 +81,6 @@ namespace Repository.User
             parameters.Add("@State", userReg.State);
             parameters.Add("@City", userReg.City);
             parameters.Add("@Address", userReg.Address);
-            parameters.Add("@Rating", userReg.Rating);
             parameters.Add("@Area", userReg.Area);
             parameters.Add("@AddressType", userReg.AddressType);
             parameters.Add("@AccountNo", userReg.AccountNo);
@@ -88,6 +88,7 @@ namespace Repository.User
             parameters.Add("@BankName", userReg.BankName);
             parameters.Add("@IFSC_Code", userReg.IFSC_Code);
             parameters.Add("@UPI_Detail", userReg.UPI_Detail);
+            parameters.Add("@shopImageList", string.Join(",", userReg.ShopImageName));
 
             int data = await ExecuteAsync<int>("SP_RegisterUser", parameters, commandType: CommandType.StoredProcedure);
 

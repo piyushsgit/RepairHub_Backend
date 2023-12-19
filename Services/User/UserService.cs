@@ -16,6 +16,7 @@ using System.IdentityModel.Tokens.Jwt;
 
 using System.Security.Claims;
 using System.Text;
+using Org.BouncyCastle.Ocsp;
 
 
 namespace Services.User
@@ -149,7 +150,7 @@ namespace Services.User
         }
          
 
-        #region Encrypt Password
+        #region Register user
         //public static string GetHash(string input)
         //{
         //    using (SHA256 sha256Hash = SHA256.Create())
@@ -171,62 +172,46 @@ namespace Services.User
         //}
 
 
-        public async Task<ApiPostResponse<int>> RegisterUser(RegistrationModel regData)
+        public async Task<ApiPostResponse<int>> RegisterUser(RegistrationUserModel regData)
         {
             ApiPostResponse<int> response = new ApiPostResponse<int>();
-            var img = regData.Image;
 
-            string imgpath = Path.Combine(Directory.GetCurrentDirectory(), "Asset/Images");
-            string destinationPath = Path.Combine(imgpath, img.FileName);
-            regData.ProfileImage = img.FileName;
-
-            using (var stream = new FileStream(destinationPath, FileMode.Create))
-
+            if (regData == null || regData.image == null || regData.image.Length == 0)
             {
-                img.CopyToAsync(stream);
+                response.Success = false;
+                return response;
             }
-            //var Id = regData.Id;
-            var FirstName = regData.FirstName;
-            var LastName = regData.LastName;
-            var ContactNo = regData.ContactNo;
-            var EmailId = regData.EmailId;
-            var UserTypeId = regData.UserTypeId;
-            var CreatedBy = regData.CreatedBy;
-            var ModifiedBy = regData.ModifiedBy;
-            var Password = regData.Password;
-            var ProfileImage = regData.ProfileImage;
-            var ShopName = regData.ShopName;
-            var ShopOwner = regData.ShopOwnerName;
-            var AddharNumber = regData.AddharNumber;
-            var PanNumber = regData.PanNumber;
-            var shopDescription = regData.ShopDescription;
-            var ShopRepairType = regData.ShopRepairType;
-            var Since = regData.Since;
-            var AsociateWith = regData.AsociateWith;
-            var Country = regData.Country;
-            var State = regData.State;
-            var City = regData.City;
-            var Address = regData.Address;
-            var Rating = regData.Rating;
-            var Area = regData.Area;
-            var AddressType = regData.AddressType;
-            var AccountNo = regData.AccountNo;
-            var AccountHolderName = regData.AccountHolderName;
-            var BankName = regData.BankName;
-            var IFSC_Code = regData.IFSC_Code;
-            var UPI_Detail = regData.UPI_Detail;
 
+            // Define the directory path where you want to save the images
+            string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "ProfileImages");
 
+            // Check if an image is uploaded
+            if (regData.image != null)
+            {
+                string uniqueFileName = Guid.NewGuid() + "_" + regData.image.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
-
-            var result = await _accountRepository.RegisterUser(regData);
-            if (result == 3) {
-                response.Data = result;
-                response.Success = true;
-                response.Message = ErrorMessages.ShopkeeperRegistrationSuccess;
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await regData.image.CopyToAsync(stream);
+                }
+                regData.ProfileImage = uniqueFileName;
             }
-           
-            else if(result == 1){
+            else
+            {
+                regData.ProfileImage = null;
+            }
+            RegistrationModel model = new RegistrationModel()
+            {
+                FirstName=regData.FirstName, LastName=regData.LastName,Password=regData.Password,
+                ContactNo=regData.ContactNo,EmailId=regData.EmailId,ProfileImage=regData.ProfileImage,
+                UserTypeId=3
+            };
+
+            var result = await _accountRepository.RegisterUser(model);
+
+             if (result == 1)
+            {
                 response.Data = result;
                 response.Success = true;
                 response.Message = ErrorMessages.CustomerRegistrationSuccess;

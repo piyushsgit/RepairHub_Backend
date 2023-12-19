@@ -28,7 +28,27 @@ namespace Model.ShopDetails
             [StringLength(255)]
             public string? ShopType { get; set; }
         }
+        public class ShopDetailsById
+        {
+            public long UserId { get; set; }
+            [StringLength(255)]
+            public string ShopName { get; set; } = null!;
+            [StringLength(100)]
+            public string ShopOwnerName { get; set; } = null!;
+            [StringLength(100)]
+            public string ContactNumber { get; set; } = null!;
+            public string ShopDescription { get; set; } = null!;
+            [Column(TypeName = "decimal(5, 2)")]
+            public decimal? Rating { get; set; }
+            public int ShopReparingType { get; set; }
+            public string FullAddress { get; set; } = null!;
+            [Column(TypeName = "datetime")]
+            public DateTime Since { get; set; }
+            public string AsociateWith { get; set; } = null!;
+            public long Id { get; set; }
+            [StringLength(255)]
+            public string? ShopType { get; set; }
+        }
 
-      
     }
 }
