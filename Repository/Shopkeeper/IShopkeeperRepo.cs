@@ -6,5 +6,7 @@ namespace Repository.Shopkeeper
     public interface IShopkeeperRepo
     {
         public Task<List<ShopDetails>> GetShopDetails();
+
+        public Task<ShopDetailsById> GetShopDetailsById(long id);
     }
 }

@@ -1,21 +1,22 @@
 ﻿using Common.CommonMethods;
 using Common.Helper;
+using MailKit.Net.Smtp;
+using MailKit.Security;
 using Microsoft.Extensions.Configuration;
+
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+
 using Microsoft.IdentityModel.Tokens;
-using Model;
+using MimeKit;
 using Model.AppSettingsJason;
 using Model.UsersModels;
-using Repository.Shopkeeper;
 using Repository.User;
-using System.Data;
-using System.Diagnostics.Metrics;
 using System.IdentityModel.Tokens.Jwt;
-using System.Numerics;
-using System.Reflection;
+
 using System.Security.Claims;
 using System.Text;
-using static System.Net.WebRequestMethods;
+using Org.BouncyCastle.Ocsp;
 
 
 namespace Services.User
@@ -24,10 +25,10 @@ namespace Services.User
     {
         private IUserRepository _accountRepository;
         private readonly INonStaticCommonMethods _nonStatic;
-        public  IConfiguration _connectionString;
+        public IConfiguration _connectionString;
 
         #region Constructors
-        public UserService(IConfiguration connection, IUserRepository accountRepository,INonStaticCommonMethods nonStatic)
+        public UserService(IConfiguration connection, IUserRepository accountRepository, INonStaticCommonMethods nonStatic)
         {
             _connectionString = connection;
             _accountRepository = accountRepository;
@@ -40,22 +41,22 @@ namespace Services.User
             var res = new ApiPostResponse<LoginModelResponse>();
             LoginModelResponse loginModelResponse = new LoginModelResponse();
             loginModelResponse = await _accountRepository.UserLogin(model);
-            if (loginModelResponse.message == "email not exists" || loginModelResponse.message == "ContactNo not exists"|| loginModelResponse.message == "Otp Expired" || loginModelResponse.message == "please enter your otp")
+            if (loginModelResponse.message == "email not exists" || loginModelResponse.message == "ContactNo not exists" || loginModelResponse.message == "Otp Expired" || loginModelResponse.message == "please enter your otp")
             {
                 res.Success = false;
                 res.Message = loginModelResponse.message;
                 return res;
-            } 
-            else 
+            }
+            else
             {
                 res.Data = new LoginModelResponse
                 {
-                    JwdToken = Login(model.ContactNo, "Admin") 
+                    JwdToken = Login(model.ContactNo, "Admin")
                 };
                 res.Success = true;
                 res.Message = ErrorMessages.LoginSuccess;
                 return res;
-            } 
+            }
         }
         public async Task<ApiPostResponse<LoginModelResponse>> AdminLogin(LoginWithEmail model)
         {
@@ -84,9 +85,44 @@ namespace Services.User
                 return res;
             }
         }
-        public Task<OtpVerificationResponse> Generateopt(string ContactNo)
+        public async Task<OtpVerificationResponse> Generateopt(string? ContactNo, Email? req)
         {
-            return _accountRepository.Generateopt(ContactNo);
+            if (string.IsNullOrEmpty(req.EmailId))
+            { 
+            return await _accountRepository.Generateopt(ContactNo,null);
+            } 
+            var result = await _accountRepository.Generateopt(null,req.EmailId); 
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress("Repaihub", _nonStatic.GetConfigurationValue(AppSettingsJason.EmailSettings.UserName)));
+            message.To.Add(new MailboxAddress(req.EmailId, req.EmailId)); 
+            if (req.type == 1) // for email verication
+            {
+                message.Subject = "Email Verification";
+                var bodyBuilder = new BodyBuilder();
+                bodyBuilder.HtmlBody = $"Please verify your Email Your Otp is: {result.otp} .( Your OTP is only valid for 2 Minutes)";
+                message.Body = bodyBuilder.ToMessageBody();
+            }
+            else if (req.type == 2) // for Forgot Password
+            {
+                message.Subject = "Forgot Password";
+                var bodyBuilder = new BodyBuilder();
+                bodyBuilder.HtmlBody = $" Your Otp is: {result.otp} for Forgot Password.Please don't share If your are not trying to change your pasword. (Your OTP is only valid for 2 Minutes) ";
+                message.Body = bodyBuilder.ToMessageBody();
+            }
+            else if (req.type == 3) // for Change Password
+            {
+                message.Subject = "Change Password";
+                var bodyBuilder = new BodyBuilder();
+                bodyBuilder.HtmlBody = $" Your Otp is: {result.otp} for Change Password.Please don't share If your are not trying to change your pasword. (Your OTP is only valid for 2 Minutes) ";
+                message.Body = bodyBuilder.ToMessageBody();
+            }
+ 
+            using var client = new SmtpClient();
+            await client.ConnectAsync(_nonStatic.GetConfigurationValue(AppSettingsJason.EmailSettings.SmtpServer), Convert.ToInt32(_nonStatic.GetConfigurationValue(AppSettingsJason.EmailSettings.Port)), SecureSocketOptions.StartTls);
+            await client.AuthenticateAsync(_nonStatic.GetConfigurationValue(AppSettingsJason.EmailSettings.UserName), _nonStatic.GetConfigurationValue(AppSettingsJason.EmailSettings.Password));
+            await client.SendAsync(message);
+            await client.DisconnectAsync(true);
+            return result;
         }
         public string Login(string Data, string Role)
         {
@@ -108,11 +144,13 @@ namespace Services.User
         }
 
         public async Task<Message> ForgotPassword(ForgotPassword forgot)
-        { 
-            var Message = await _accountRepository.ForgotPassword(forgot); 
+        {
+            var Message = await _accountRepository.ForgotPassword(forgot);
             return await _accountRepository.ForgotPassword(forgot);
         }
+         
 
+        #region Register user
         //public static string GetHash(string input)
         //{
         //    using (SHA256 sha256Hash = SHA256.Create())
@@ -132,6 +170,62 @@ namespace Services.User
         //        return builder.ToString();
         //    }
         //}
+
+
+        public async Task<ApiPostResponse<int>> RegisterUser(RegistrationUserModel regData)
+        {
+            ApiPostResponse<int> response = new ApiPostResponse<int>();
+
+            if (regData == null || regData.image == null || regData.image.Length == 0)
+            {
+                response.Success = false;
+                return response;
+            }
+
+            // Define the directory path where you want to save the images
+            string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "ProfileImages");
+
+            // Check if an image is uploaded
+            if (regData.image != null)
+            {
+                string uniqueFileName = Guid.NewGuid() + "_" + regData.image.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await regData.image.CopyToAsync(stream);
+                }
+                regData.ProfileImage = uniqueFileName;
+            }
+            else
+            {
+                regData.ProfileImage = null;
+            }
+            RegistrationModel model = new RegistrationModel()
+            {
+                FirstName=regData.FirstName, LastName=regData.LastName,Password=regData.Password,
+                ContactNo=regData.ContactNo,EmailId=regData.EmailId,ProfileImage=regData.ProfileImage,
+                UserTypeId=3
+            };
+
+            var result = await _accountRepository.RegisterUser(model);
+
+             if (result == 1)
+            {
+                response.Data = result;
+                response.Success = true;
+                response.Message = ErrorMessages.CustomerRegistrationSuccess;
+            }
+            else
+            {
+                response.Success = false;
+                response.Message = "Failure";
+            }
+            return response;
+
+        }
+
+        #endregion
 
     }
 }

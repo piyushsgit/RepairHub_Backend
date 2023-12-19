@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Common.CommonMethods
 {
-    public class NonStaticCommonMethods : INonStaticCommonMethods 
-    { 
+    public class NonStaticCommonMethods : INonStaticCommonMethods
+    {
         private readonly IConfiguration iConfig;
 
         public NonStaticCommonMethods(IConfiguration iConfig)
@@ -18,8 +18,14 @@ namespace Common.CommonMethods
             this.iConfig = iConfig;
         }
 
-        public string? GetConfigurationValue(string Key) 
-        { 
+        public IConfigurationSection? GetConfigurationSection(string SectionName)
+        {
+            return iConfig.GetSection(SectionName) ?? null;
+
+        }
+
+        public string? GetConfigurationValue(string Key)
+        {
             return iConfig.GetValue<string>(Key) ?? null;
 
         }

@@ -20,4 +20,10 @@
     <ProjectReference Include="..\Services\Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Asset\Images\" />
+    <Folder Include="wwwroot\ShopImages\" />
+    <Folder Include="wwwroot\ProfileImages\" />
+  </ItemGroup>
+
 </Project>
