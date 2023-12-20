@@ -1,12 +1,14 @@
 ﻿using Common.Helper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Model.UsersModels;
 using Services.User;
- 
+using System.Web.Http;
+using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
+using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace RepairHub.Areas.Users.Controllers
 {
+    
     [Route("api/Users/[controller]/[Action]")]
     [ApiController]
     public class UserController : ControllerBase
