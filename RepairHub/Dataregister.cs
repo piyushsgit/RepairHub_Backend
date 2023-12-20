@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using Common;
+using Microsoft.Win32;
 using Repository;
 using Services;
 
@@ -11,6 +12,7 @@ namespace RepairHub
             {
                 Configure(services, RegisterRepository.GetTypes());
                 Configure(services, RegisterService.GetTypes());
+                Configure(services, RegisterCommon.GetTypes());
 
             }
             public static void Configure(IServiceCollection services, Dictionary<Type, Type> types)

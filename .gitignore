@@ -1,0 +1,12 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+*.suo
+*.user
+_ReSharper.*
+bin
+obj
+packages
+#/.vs/RepairHub/FileContentIndex/0b81e81c-19db-4a16-8072-0001dca120d3.vsidx
+/.vs

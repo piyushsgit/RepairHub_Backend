@@ -6,8 +6,12 @@
         public const string UserLogin = "[SP_Login]";
         public const string UserRegister = "sp_SMSUserRegister";
         public const string GenerateOtp = "[sp_GenerateOtp]";
-        public const string GetUserDetailsByEmail = "sp_Get_User_Details_By_Email";
-        
+        public const string ForgotPassword = "[Sp_ForgotPassword]";
+        #endregion
+
+        #region Shop
+        public const string GetShopDetails = "[SP_ShopList]";
+        public const string GetShopDetailsById = "[Sp_GetShopDetailById]";
         #endregion
 
     }
