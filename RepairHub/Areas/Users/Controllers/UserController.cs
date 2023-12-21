@@ -73,7 +73,18 @@ namespace RepairHub.Areas.Users.Controllers
             email.type = 3;
             email.EmailId = EmailId;
             return await UserService.Generateopt(null, email);
-        } 
+        }
 
+        [HttpGet]
+        public async Task<IActionResult> FilterShop(string FilterType, int Rating, int PageSize, int PageNumber)
+        {
+            return  Ok(await UserService.GetFilterShopAsync(FilterType,Rating,PageSize, PageNumber));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ShopTypes()
+        {
+            return Ok(await UserService.GetShopTypeAsync());
+        }
     }
 }

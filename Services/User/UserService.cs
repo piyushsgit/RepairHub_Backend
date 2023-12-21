@@ -17,7 +17,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Org.BouncyCastle.Ocsp;
-
+using Model.dbModels;
 
 namespace Services.User
 {
@@ -148,7 +148,7 @@ namespace Services.User
             var Message = await _accountRepository.ForgotPassword(forgot);
             return await _accountRepository.ForgotPassword(forgot);
         }
-         
+
 
         #region Register user
         //public static string GetHash(string input)
@@ -170,7 +170,7 @@ namespace Services.User
         //        return builder.ToString();
         //    }
         //}
-
+        #endregion
 
         public async Task<ApiPostResponse<int>> RegisterUser(RegistrationUserModel regData)
         {
@@ -225,7 +225,16 @@ namespace Services.User
 
         }
 
-        #endregion
+        public async Task<List<ShopDetails>> GetFilterShopAsync(string FilterType, int Rating, int PageSize, int PageNumber)
+        {
+            return await _accountRepository.GetFilterShopAsync(FilterType, Rating, PageSize, PageNumber);
+        }
 
+        public async Task<List<ShopTypes>> GetShopTypeAsync()
+        {
+            return await _accountRepository.GetShopTypeAsync();
+        }
+
+        
     }
 }

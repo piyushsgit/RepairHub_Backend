@@ -45,7 +45,7 @@ namespace Model.UsersModels
 
         public string? ShopDescription { get; set; }
 
-        public int? ShopRepairType { get; set; }
+        public string? ShopRepairType { get; set; }
 
         public DateTime? Since { get; set; }
 

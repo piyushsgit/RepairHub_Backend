@@ -19,7 +19,7 @@ namespace Model.ShopDetails
             public string ShopDescription { get; set; } = null!;
             [Column(TypeName = "decimal(5, 2)")]
             public decimal? Rating { get; set; }
-            public int ShopReparingType { get; set; }
+            public string? ShopReparingType { get; set; }
             public string Address { get; set; } = null!;
             [Column(TypeName = "datetime")]
             public DateTime Since { get; set; } 
@@ -40,14 +40,17 @@ namespace Model.ShopDetails
             public string ShopDescription { get; set; } = null!;
             [Column(TypeName = "decimal(5, 2)")]
             public decimal? Rating { get; set; }
-            public int ShopReparingType { get; set; }
+            public string? ShopReparingType { get; set; }
             public string FullAddress { get; set; } = null!;
             [Column(TypeName = "datetime")]
             public DateTime Since { get; set; }
             public string AsociateWith { get; set; } = null!;
             public long Id { get; set; }
             [StringLength(255)]
-            public string? ShopType { get; set; }
+            public string? ShopTypeNames { get; set; }
+
+           
+
         }
 
     }
