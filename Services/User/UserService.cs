@@ -18,6 +18,7 @@ using System.Security.Claims;
 using System.Text;
 using Org.BouncyCastle.Ocsp;
 using Model.dbModels;
+using Model.ShopDetails;
 
 namespace Services.User
 {
@@ -235,6 +236,13 @@ namespace Services.User
             return await _accountRepository.GetShopTypeAsync();
         }
 
-        
+        public async Task<List<TopBrands>> GetShopBrandsAsync()
+        {
+            return await _accountRepository.GetShopBrandsAsync();
+        }
+        public async Task<List<SearchData>> GetSearchDataAsync(string SearchParameter)
+        {
+            return await _accountRepository.GetSearchDataAsync(SearchParameter);
+        }
     }
 }

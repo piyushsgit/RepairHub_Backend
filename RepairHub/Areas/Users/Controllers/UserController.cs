@@ -1,6 +1,7 @@
 ﻿using Common.Helper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Model.dbModels;
 using Model.UsersModels;
 using Services.User;
 
@@ -85,6 +86,16 @@ namespace RepairHub.Areas.Users.Controllers
         public async Task<IActionResult> ShopTypes()
         {
             return Ok(await UserService.GetShopTypeAsync());
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetShopBrands()
+        {
+            return Ok(await UserService.GetShopBrandsAsync());
+        }
+        [HttpGet]
+        public async Task<IActionResult> SearchData(string SearchParameter)
+        {
+            return Ok(await UserService.GetSearchDataAsync(SearchParameter));
         }
     }
 }

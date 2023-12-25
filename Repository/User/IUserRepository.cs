@@ -1,5 +1,6 @@
 ﻿using Data;
 using Model.dbModels;
+using Model.ShopDetails;
 using Model.UsersModels;
 using System;
 using System.Collections.Generic;
@@ -21,5 +22,7 @@ namespace Repository.User
         public Task<int> RegisterUser(RegistrationModel userReg);
         public Task<List<ShopDetails>> GetFilterShopAsync(string FilterType, int Rating, int PageSize, int PageNumber);
         public Task<List<ShopTypes>> GetShopTypeAsync();
+        public Task<List<TopBrands>> GetShopBrandsAsync();
+        public Task<List<SearchData>> GetSearchDataAsync(string SearchParameter);
     }
 }   

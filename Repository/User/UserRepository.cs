@@ -3,6 +3,7 @@ using Common.Helper;
 using Dapper;
 using Data;
 using Model.dbModels;
+using Model.ShopDetails;
 using Model.UsersModels;
 using System.Data;
 
@@ -111,6 +112,21 @@ namespace Repository.User
         {
            
             var result = await QueryAsync<ShopTypes>(StoreProcedures.ShopType, commandType: CommandType.StoredProcedure);
+            return result.ToList();
+
+        }
+        public async Task<List<TopBrands>> GetShopBrandsAsync()
+        {
+
+            var result = await QueryAsync<TopBrands>(StoreProcedures.GetBrands, commandType: CommandType.StoredProcedure);
+            return result.ToList();
+
+        }
+        public async Task<List<SearchData>> GetSearchDataAsync(string SearchParameter)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@SearchParameter", SearchParameter);
+            var result = await QueryAsync<SearchData>(StoreProcedures.GetSearchData, parameters, commandType: CommandType.StoredProcedure);
             return result.ToList();
 
         }
