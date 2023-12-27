@@ -2,6 +2,7 @@
 using Common.Helper;
 using Dapper;
 using Data;
+using Model.dbModels;
 using Model.UsersModels;
 using System.Data;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -98,6 +99,25 @@ namespace Repository.User
 
             return data;
         }
+
+
+        public async Task<List<ShopDetails>> GetFilterShopAsync(string FilterType,int Rating, int PageSize,int PageNumber)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@FilterType", FilterType);
+            parameters.Add("@Rating", Rating);
+            parameters.Add("@PageSize", PageSize);
+            parameters.Add("@PageNumber", PageNumber);
+            var result = await QueryAsync<ShopDetails>(StoreProcedures.FilterShop, parameters, commandType: CommandType.StoredProcedure);
+            return result.ToList();
+
+        }
+        public async Task<List<ShopTypes>> GetShopTypeAsync()
+        {
+           
+            var result = await QueryAsync<ShopTypes>(StoreProcedures.ShopType, commandType: CommandType.StoredProcedure);
+            return result.ToList();
+
 
         public async Task<LoginModelResponse> SignInGoogle(SignInGoogle userLogin)
         {

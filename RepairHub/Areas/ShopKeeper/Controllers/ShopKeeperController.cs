@@ -1,5 +1,6 @@
 ﻿using Common.Helper;
 using Microsoft.AspNetCore.Mvc;
+using Model.ShopDetails;
 using Model.UsersModels;
 using Services.Shopkeeper;
 using Services.User;
@@ -34,6 +35,12 @@ namespace RepairHub.Areas.ShopKeeper.Controllers
         public  Task<ApiPostResponse<int>> RegisterShop ([FromForm] RegistrationModel regData)
         {
             return  shopKeeperService.RegisterShop(regData);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetShopImage(int id)
+        {
+            return Ok(await shopKeeperService.GetShopImageById(id));
         }
     }
 }

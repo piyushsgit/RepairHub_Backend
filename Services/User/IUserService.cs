@@ -1,4 +1,5 @@
-﻿using Common.Helper; 
+﻿using Common.Helper;
+using Model.dbModels;
 using Model.UsersModels; 
 namespace Services.User
 {
@@ -11,6 +12,12 @@ namespace Services.User
 
 
         public Task<ApiPostResponse<int>> RegisterUser(RegistrationUserModel regData);
+
+        public Task<List<ShopDetails>> GetFilterShopAsync(string FilterType, int Rating, int PageSize, int PageNumber);
+        public Task<List<ShopTypes>> GetShopTypeAsync();
+
+        
+
 
         public Task<ApiPostResponse<LoginModelResponse>> SignInGoogle(SignInGoogle userLogin);
         public Task<ApiPostResponse< int>> InsertRequest(InsertRequestmodel req);

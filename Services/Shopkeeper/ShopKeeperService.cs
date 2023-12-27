@@ -1,6 +1,7 @@
 ﻿using Common.CommonMethods;
 using Common.Helper;
 using Microsoft.AspNetCore.Http;
+using Model.ShopDetails;
 using Model.UsersModels;
 using Org.BouncyCastle.Ocsp;
 using Repository.Shopkeeper;
@@ -76,6 +77,26 @@ namespace Services.Shopkeeper
         }
 
 
-        
+        private async Task<string> SaveImageAsync(IFormFile image, string uploadsFolder)
+        {
+            if (image == null)
+            {
+                return null;
+            }
+
+            string uniqueFileName = Guid.NewGuid() + "_" + image.FileName;
+            string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await image.CopyToAsync(stream);
+            }
+
+            return uniqueFileName;
+        }
+        public async Task<List<ImageModel>> GetShopImageById(int id)
+        {
+            return await shopkeeperRepo.GetShopImageById(id);
+        }
     }
 }
