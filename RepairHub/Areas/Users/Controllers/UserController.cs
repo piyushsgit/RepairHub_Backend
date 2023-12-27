@@ -56,7 +56,7 @@ namespace RepairHub.Areas.Users.Controllers
             var email = new Email();
             email.type = 1;
             email.EmailId = EmailId;
-            return await UserService.Generateopt(null,email);
+            return await UserService.Generateopt(null, email);
         }
         [HttpPost]
         public async Task<OtpVerificationResponse> SendOtpForForgotPassword(string EmailId)
@@ -75,10 +75,18 @@ namespace RepairHub.Areas.Users.Controllers
             return await UserService.Generateopt(null, email);
         }
 
+
         [HttpGet]
         public async Task<IActionResult> FilterShop(string FilterType, int Rating, int PageSize, int PageNumber)
         {
             return  Ok(await UserService.GetFilterShopAsync(FilterType,Rating,PageSize, PageNumber));
+
+        [HttpPost]
+        public async Task<ApiPostResponse<LoginModelResponse>> SignInGoogle(SignInGoogle login)
+        {
+            
+            return await UserService.SignInGoogle(login);
+
         }
 
         [HttpGet]

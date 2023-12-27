@@ -14,38 +14,38 @@ namespace Repository.User
         private readonly INonStaticCommonMethods nonStatic;
 
 
-         
-        public UserRepository(INonStaticCommonMethods config) : base(config) 
-        { 
+
+        public UserRepository(INonStaticCommonMethods config) : base(config)
+        {
             this.nonStatic = nonStatic;
         }
-         
+
         public async Task<LoginModelResponse> UserLogin(LoginWithContact userLogin)
-        { 
-                var param = new DynamicParameters(); 
-                 param.Add("@contactNo", userLogin.ContactNo);
-                 param.Add("@otp", userLogin.Otp);
-                return await QueryFirstOrDefaultAsync<LoginModelResponse>(StoreProcedures.UserLogin, param, commandType: CommandType.StoredProcedure);
-       
+        {
+            var param = new DynamicParameters();
+            param.Add("@contactNo", userLogin.ContactNo);
+            param.Add("@otp", userLogin.Otp);
+            return await QueryFirstOrDefaultAsync<LoginModelResponse>(StoreProcedures.UserLogin, param, commandType: CommandType.StoredProcedure);
+
         }
         public async Task<LoginModelResponse> AdminLogin(LoginWithEmail userLogin)
         {
 
             var param = new DynamicParameters();
             param.Add("@EmailId", userLogin.Email);
-            param.Add("@Password", userLogin.Password); 
+            param.Add("@Password", userLogin.Password);
             return await QueryFirstOrDefaultAsync<LoginModelResponse>(StoreProcedures.UserLogin, param, commandType: CommandType.StoredProcedure);
 
         }
 
-        public async Task<OtpVerificationResponse> Generateopt(string? ContactNo,string? email)
+        public async Task<OtpVerificationResponse> Generateopt(string? ContactNo, string? email)
         {
             var param = new DynamicParameters();
             param.Add("@ContactNo", ContactNo);
             param.Add("@email", email);
-            return await QueryFirstOrDefaultAsync<OtpVerificationResponse>(StoreProcedures.GenerateOtp , param, commandType: CommandType.StoredProcedure);
+            return await QueryFirstOrDefaultAsync<OtpVerificationResponse>(StoreProcedures.GenerateOtp, param, commandType: CommandType.StoredProcedure);
         }
- 
+
 
         public async Task<Message> ForgotPassword(ForgotPassword forgot)
         {
@@ -55,7 +55,7 @@ namespace Repository.User
             param.Add("@MobileNo", forgot.contact);
             param.Add("@OTP", forgot.Otp);
             param.Add("@NewPassword", forgot.NewPassword);
- 
+
             return await QueryFirstOrDefaultAsync<Message>(StoreProcedures.ForgotPassword, param, commandType: CommandType.StoredProcedure);
         }
 
@@ -65,11 +65,13 @@ namespace Repository.User
             parameters.Add("@FirstName", userReg.FirstName);
             parameters.Add("@LastName", userReg.LastName);
             parameters.Add("@ContactNo", userReg.ContactNo);
-            parameters.Add("@EmailId",userReg.EmailId);
+            parameters.Add("@EmailId", userReg.EmailId);
             parameters.Add("@UserTypeId", userReg.UserTypeId);
             parameters.Add("@CreatedBy", userReg.CreatedBy);
             parameters.Add("@Password", userReg.Password);
             parameters.Add("@ProfileImage", userReg.ProfileImage);
+            if(userReg.UserTypeId != 3)
+            {
             parameters.Add("@ShopName", userReg.ShopName);
             parameters.Add("@ShopOwnerName", userReg.ShopOwnerName);
             parameters.Add("@AddharNumber", userReg.AddharNumber);
@@ -90,11 +92,13 @@ namespace Repository.User
             parameters.Add("@IFSC_Code", userReg.IFSC_Code);
             parameters.Add("@UPI_Detail", userReg.UPI_Detail);
             parameters.Add("@shopImageList", string.Join(",", userReg.ShopImageName));
+            }
 
             int data = await ExecuteAsync<int>("SP_RegisterUser", parameters, commandType: CommandType.StoredProcedure);
 
             return data;
         }
+
 
         public async Task<List<ShopDetails>> GetFilterShopAsync(string FilterType,int Rating, int PageSize,int PageNumber)
         {
@@ -112,6 +116,16 @@ namespace Repository.User
            
             var result = await QueryAsync<ShopTypes>(StoreProcedures.ShopType, commandType: CommandType.StoredProcedure);
             return result.ToList();
+
+
+        public async Task<LoginModelResponse> SignInGoogle(SignInGoogle userLogin)
+        {
+            var param = new DynamicParameters();
+            param.Add("@Email", userLogin.Email);
+            param.Add("@FirstName", userLogin.FirstName);
+            param.Add("@LastName", userLogin.LastName);
+            param.Add("@ProfileImage", userLogin.ProfileImage);
+            return await QueryFirstOrDefaultAsync<LoginModelResponse>("SignInWithGoogle", param, commandType: CommandType.StoredProcedure);
 
         }
     }

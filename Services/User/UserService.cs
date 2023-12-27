@@ -51,7 +51,7 @@ namespace Services.User
             {
                 res.Data = new LoginModelResponse
                 {
-                    JwdToken = Login(model.ContactNo, "Admin")
+                    JwdToken = Login(model.ContactNo, "User")
                 };
                 res.Success = true;
                 res.Message = ErrorMessages.LoginSuccess;
@@ -88,13 +88,13 @@ namespace Services.User
         public async Task<OtpVerificationResponse> Generateopt(string? ContactNo, Email? req)
         {
             if (string.IsNullOrEmpty(req.EmailId))
-            { 
-            return await _accountRepository.Generateopt(ContactNo,null);
-            } 
-            var result = await _accountRepository.Generateopt(null,req.EmailId); 
+            {
+                return await _accountRepository.Generateopt(ContactNo, null);
+            }
+            var result = await _accountRepository.Generateopt(null, req.EmailId);
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress("Repaihub", _nonStatic.GetConfigurationValue(AppSettingsJason.EmailSettings.UserName)));
-            message.To.Add(new MailboxAddress(req.EmailId, req.EmailId)); 
+            message.To.Add(new MailboxAddress(req.EmailId, req.EmailId));
             if (req.type == 1) // for email verication
             {
                 message.Subject = "Email Verification";
@@ -116,7 +116,7 @@ namespace Services.User
                 bodyBuilder.HtmlBody = $" Your Otp is: {result.otp} for Change Password.Please don't share If your are not trying to change your pasword. (Your OTP is only valid for 2 Minutes) ";
                 message.Body = bodyBuilder.ToMessageBody();
             }
- 
+
             using var client = new SmtpClient();
             await client.ConnectAsync(_nonStatic.GetConfigurationValue(AppSettingsJason.EmailSettings.SmtpServer), Convert.ToInt32(_nonStatic.GetConfigurationValue(AppSettingsJason.EmailSettings.Port)), SecureSocketOptions.StartTls);
             await client.AuthenticateAsync(_nonStatic.GetConfigurationValue(AppSettingsJason.EmailSettings.UserName), _nonStatic.GetConfigurationValue(AppSettingsJason.EmailSettings.Password));
@@ -124,6 +124,7 @@ namespace Services.User
             await client.DisconnectAsync(true);
             return result;
         }
+
         public string Login(string Data, string Role)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -203,14 +204,18 @@ namespace Services.User
             }
             RegistrationModel model = new RegistrationModel()
             {
-                FirstName=regData.FirstName, LastName=regData.LastName,Password=regData.Password,
-                ContactNo=regData.ContactNo,EmailId=regData.EmailId,ProfileImage=regData.ProfileImage,
-                UserTypeId=3
+                FirstName = regData.FirstName,
+                LastName = regData.LastName,
+                Password = regData.Password,
+                ContactNo = regData.ContactNo,
+                EmailId = regData.EmailId,
+                ProfileImage = regData.ProfileImage,
+                UserTypeId = 3
             };
 
             var result = await _accountRepository.RegisterUser(model);
 
-             if (result == 1)
+            if (result == 1)
             {
                 response.Data = result;
                 response.Success = true;
@@ -235,6 +240,38 @@ namespace Services.User
             return await _accountRepository.GetShopTypeAsync();
         }
 
-        
+
+        #region
+        public async Task<ApiPostResponse<LoginModelResponse>> SignInGoogle(SignInGoogle userLogin)
+        {
+            var res = new ApiPostResponse<LoginModelResponse>();
+            var data = await _accountRepository.SignInGoogle(userLogin);
+            if (data == null)
+            {
+                res.Success = false;
+                res.Message = data.message;
+                return res;
+            }
+            else
+            {
+                res.Data = new LoginModelResponse
+                {
+                    JwdToken = Login(userLogin.Email, "User"),
+                    Id= data.Id,
+                    userTypeId=data.userTypeId,
+                    tokenExpiration= _nonStatic.GetConfigurationValue(AppSettingsJason.JwtToken.TimeOutMin),
+                    EmailId = data.EmailId,
+                    profileImage=data.profileImage,
+                    IsVarified=data.IsVarified,
+                    First_Name=data.First_Name
+
+                };
+                res.Success = true;
+                res.Message = ErrorMessages.LoginSuccess;
+                return res;
+            }
+        }
+        #endregion
+
     }
 }
