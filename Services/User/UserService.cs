@@ -184,23 +184,8 @@ namespace Services.User
 
             // Define the directory path where you want to save the images
             string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "ProfileImages");
-
-            // Check if an image is uploaded
-            if (regData.image != null)
-            {
-                string uniqueFileName = Guid.NewGuid() + "_" + regData.image.FileName;
-                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await regData.image.CopyToAsync(stream);
-                }
-                regData.ProfileImage = uniqueFileName;
-            }
-            else
-            {
-                regData.ProfileImage = null;
-            }
+            regData.ProfileImage =await StaticMethods.SaveImageAsync(regData.image,uploadsFolder);
+            
             RegistrationModel model = new RegistrationModel()
             {
                 FirstName = regData.FirstName,
@@ -231,7 +216,7 @@ namespace Services.User
 
         #endregion
 
-        #region
+        #region Siginwithgoogle
         public async Task<ApiPostResponse<LoginModelResponse>> SignInGoogle(SignInGoogle userLogin)
         {
             var res = new ApiPostResponse<LoginModelResponse>();
@@ -247,19 +232,65 @@ namespace Services.User
                 res.Data = new LoginModelResponse
                 {
                     JwdToken = Login(userLogin.Email, "User"),
-                    Id= data.Id,
-                    userTypeId=data.userTypeId,
-                    tokenExpiration= _nonStatic.GetConfigurationValue(AppSettingsJason.JwtToken.TimeOutMin),
+                    Id = data.Id,
+                    userTypeId = data.userTypeId,
+                    tokenExpiration = _nonStatic.GetConfigurationValue(AppSettingsJason.JwtToken.TimeOutMin),
                     EmailId = data.EmailId,
-                    profileImage=data.profileImage,
-                    IsVarified=data.IsVarified,
-                    First_Name=data.First_Name
+                    profileImage = data.profileImage,
+                    IsVarified = data.IsVarified,
+                    First_Name = data.First_Name
 
                 };
                 res.Success = true;
                 res.Message = ErrorMessages.LoginSuccess;
                 return res;
             }
+        }
+        #endregion
+
+
+        #region Request Insert
+        public async Task<ApiPostResponse<int>> InsertRequest(InsertRequestmodel req)
+        {
+            ApiPostResponse<int> response = new ApiPostResponse<int>();
+
+            if (req == null || req.RequestImage == null || req.RequestImage.Length == 0)
+            {
+                response.Success = false;
+                return response;
+            }
+
+
+            List<string> encryptedRequestFilePaths = new List<string>();
+            // Define the directory path where you want to save the images
+            string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "RequestImages");
+
+            foreach (var requestImage in req.RequestImage)
+            {
+                string encryptedRequestFilePath = await StaticMethods.SaveImageAsync(requestImage, uploadsFolder);
+
+                if (encryptedRequestFilePath != null)
+                {
+                    encryptedRequestFilePaths.Add(encryptedRequestFilePath);
+                }
+            }
+            req.RequestImageName = encryptedRequestFilePaths;
+            // Check if an image is uploaded
+          
+            var result = await _accountRepository.InsertRequest(req);
+
+            if (result!=null)
+            {
+                
+                response.Success = true;
+                response.Message = ErrorMessages.RequestGenrated;
+            }
+            else
+            {
+                response.Success = false;
+                response.Message =ErrorMessages.FailToGenerateRequest;
+            }
+            return response;
         }
         #endregion
     }

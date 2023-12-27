@@ -1,4 +1,5 @@
-﻿using Common.Helper;
+﻿using Common.CommonMethods;
+using Common.Helper;
 using Microsoft.AspNetCore.Http;
 using Model.UsersModels;
 using Org.BouncyCastle.Ocsp;
@@ -32,7 +33,7 @@ namespace Services.Shopkeeper
             ApiPostResponse<int> response = new ApiPostResponse<int>();
 
             string profileUploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "ProfileImages");
-            regData.ProfileImage = await SaveImageAsync(regData.image, profileUploadsFolder);
+            regData.ProfileImage = await StaticMethods.SaveImageAsync(regData.image, profileUploadsFolder);
 
             // Check if the request or IData is null or if the ShopImage array is empty
             if (regData == null || regData.ShopImage == null || regData.ShopImage.Length == 0)
@@ -46,7 +47,7 @@ namespace Services.Shopkeeper
 
             foreach (var shopImage in regData.ShopImage)
             {
-                string encryptedShopFilePath = await SaveImageAsync(shopImage, shopUploadsFolder);
+                string encryptedShopFilePath = await StaticMethods.SaveImageAsync(shopImage, shopUploadsFolder);
 
                 if (encryptedShopFilePath != null)
                 {
@@ -75,22 +76,6 @@ namespace Services.Shopkeeper
         }
 
 
-        private async Task<string> SaveImageAsync(IFormFile image, string uploadsFolder)
-        {
-            if (image == null)
-            {
-                return null;
-            }
-
-            string uniqueFileName = Guid.NewGuid() + "_" + image.FileName;
-            string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                await image.CopyToAsync(stream);
-            }
-
-            return uniqueFileName;
-        }
+        
     }
 }

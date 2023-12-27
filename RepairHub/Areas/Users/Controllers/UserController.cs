@@ -81,6 +81,10 @@ namespace RepairHub.Areas.Users.Controllers
             
             return await UserService.SignInGoogle(login);
         }
-
+        [HttpPost]
+        public async Task<ApiPostResponse<int>> InsertRequest([FromForm]  InsertRequestmodel req)
+        {
+            return await UserService.InsertRequest(req);
+        }
     }
 }

@@ -21,5 +21,6 @@ namespace Repository.User
         public Task<int> RegisterUser(RegistrationModel userReg);
 
         public Task<LoginModelResponse> SignInGoogle(SignInGoogle userLogin);
+        public Task<int> InsertRequest(InsertRequestmodel req);
     }
 }
