@@ -2,6 +2,7 @@
 using Common.Helper;
 using Dapper;
 using Data;
+using Model.ShopDetails;
 using System.Data;
 using static Model.ShopDetails.ShopModels;
 
@@ -25,6 +26,14 @@ namespace Repository.Shopkeeper
             dp.Add("@Id", id);
             return await QueryFirstOrDefaultAsync<ShopDetailsById>(StoreProcedures.GetShopDetailsById, dp, commandType: CommandType.StoredProcedure);
         }
+        public async Task<List<ImageModel>> GetShopImageById(int id)
+        {
+            var dp = new DynamicParameters();
+            dp.Add("@ShopId", id);
+            var result = await QueryAsync<ImageModel>(StoreProcedures.GetImages, dp, commandType: CommandType.StoredProcedure);
+            return result.ToList();
+        }
+
     }
 }
     

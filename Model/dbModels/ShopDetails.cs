@@ -41,7 +41,7 @@ public partial class ShopDetails
     [Column(TypeName = "decimal(5, 2)")]
     public decimal? Rating { get; set; }
 
-    public int ShopReparingType { get; set; }
+    public string? ShopReparingType { get; set; }
 
     public bool? IsDelete { get; set; }
 
@@ -65,4 +65,5 @@ public partial class ShopDetails
 
     [Unicode(false)]
     public string AsociateWith { get; set; } = null!;
+    public int TotalCount { get; set; }
 }

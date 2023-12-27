@@ -12,6 +12,10 @@
         #region Shop
         public const string GetShopDetails = "[SP_ShopList]";
         public const string GetShopDetailsById = "[Sp_GetShopDetailById]";
+        public const string FilterShop = "GetTopShops";
+        public const string ShopType = "SelectIdAndFieldName";
+        public const string GetImages = "sp_selectImageById";
+
         #endregion
 
     }

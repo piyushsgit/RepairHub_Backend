@@ -1,5 +1,6 @@
 ﻿using Common.Helper;
 using Microsoft.AspNetCore.Http;
+using Model.ShopDetails;
 using Model.UsersModels;
 using Org.BouncyCastle.Ocsp;
 using Repository.Shopkeeper;
@@ -91,6 +92,10 @@ namespace Services.Shopkeeper
             }
 
             return uniqueFileName;
+        }
+        public async Task<List<ImageModel>> GetShopImageById(int id)
+        {
+            return await shopkeeperRepo.GetShopImageById(id);
         }
     }
 }
