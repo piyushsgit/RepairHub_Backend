@@ -10,6 +10,6 @@ namespace Common.CommonMethods
      public interface INonStaticCommonMethods
     {
         IConfigurationSection? GetConfigurationSection(string SectionName);
-        string GetConfigurationValue(string Key);
+        public string GetConfigurationValue(string Key);
     }
 }

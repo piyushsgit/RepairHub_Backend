@@ -41,6 +41,10 @@ namespace Model.ShopDetails
             public string ShopDescription { get; set; } = null!;
             [Column(TypeName = "decimal(5, 2)")]
             public decimal? Rating { get; set; }
+            [Column(TypeName = "decimal(12, 9)")]
+            public decimal? latitude { get; set; }
+            [Column(TypeName = "decimal(12, 9)")]
+            public decimal? longitude { get; set; }
             public string? ShopReparingType { get; set; }
             public string FullAddress { get; set; } = null!;
             [Column(TypeName = "datetime")]

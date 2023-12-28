@@ -23,9 +23,10 @@ namespace Services.Shopkeeper
         {
             return shopkeeperRepo.GetShopDetails();
         }
-        public Task<ShopDetailsById> GetShopDetailsById(long id)
+        public  Task<ShopDetailsById> GetShopDetailsById(long id)
         {
             return shopkeeperRepo.GetShopDetailsById(id);
+             
         }
         public async Task<ApiPostResponse<int>> RegisterShop(RegistrationModel regData)
         {
