@@ -76,17 +76,21 @@ namespace RepairHub.Areas.Users.Controllers
             return await UserService.Generateopt(null, email);
         }
 
-        [HttpPost]
+
+        [HttpGet]
+        public async Task<IActionResult> FilterShop(string FilterType, int Rating, int PageSize, int PageNumber)
+        {
+            return Ok(await UserService.GetFilterShopAsync(FilterType, Rating, PageSize, PageNumber));
+        }
+
+            [HttpPost]
         public async Task<ApiPostResponse<LoginModelResponse>> SignInGoogle(SignInGoogle login)
         {
             
             return await UserService.SignInGoogle(login);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> FilterShop(string FilterType, int Rating, int PageSize, int PageNumber)
-        {
-            return  Ok(await UserService.GetFilterShopAsync(FilterType,Rating,PageSize, PageNumber));
+
         }
 
         [HttpGet]

@@ -124,10 +124,10 @@ namespace Repository.User
         }
         public async Task<List<ShopTypes>> GetShopTypeAsync()
         {
-           
+
             var result = await QueryAsync<ShopTypes>(StoreProcedures.ShopType, commandType: CommandType.StoredProcedure);
             return result.ToList();
-
+        }
         }
         public async Task<List<TopBrands>> GetShopBrandsAsync()
         {

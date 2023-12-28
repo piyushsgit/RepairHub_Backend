@@ -151,6 +151,7 @@ namespace Services.User
             return await _accountRepository.ForgotPassword(forgot);
         }
 
+
         #region Register user
         //public static string GetHash(string input)
         //{
@@ -239,6 +240,7 @@ namespace Services.User
         {
             return await _accountRepository.GetShopTypeAsync();
         }
+
 
         #region
         public async Task<ApiPostResponse<LoginModelResponse>> SignInGoogle(SignInGoogle userLogin)
