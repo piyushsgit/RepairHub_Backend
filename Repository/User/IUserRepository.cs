@@ -1,5 +1,6 @@
 ﻿using Data;
 using Model.dbModels;
+using Model.RequestModel;
 using Model.UsersModels;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,9 @@ namespace Repository.User
 
 
         public Task<LoginModelResponse> SignInGoogle(SignInGoogle userLogin);
+        public Task<InsertRequestResponsemodel> InsertRequest(InsertRequestmodel req);
 
+        public Task<List<statusModel>> RequestStauts(int requestId);
+        public  Task<List<GetAddress>> GetUserAddreess(int userId);
     }
 }

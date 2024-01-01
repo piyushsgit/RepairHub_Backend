@@ -1,4 +1,5 @@
-﻿using Common.Helper;
+﻿using Common.CommonMethods;
+using Common.Helper;
 using Microsoft.AspNetCore.Http;
 using Model.ShopDetails;
 using Model.UsersModels;
@@ -33,7 +34,7 @@ namespace Services.Shopkeeper
             ApiPostResponse<int> response = new ApiPostResponse<int>();
 
             string profileUploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "ProfileImages");
-            regData.ProfileImage = await SaveImageAsync(regData.image, profileUploadsFolder);
+            regData.ProfileImage = await StaticMethods.SaveImageAsync(regData.image, profileUploadsFolder);
 
             // Check if the request or IData is null or if the ShopImage array is empty
             if (regData == null || regData.ShopImage == null || regData.ShopImage.Length == 0)
@@ -47,7 +48,7 @@ namespace Services.Shopkeeper
 
             foreach (var shopImage in regData.ShopImage)
             {
-                string encryptedShopFilePath = await SaveImageAsync(shopImage, shopUploadsFolder);
+                string encryptedShopFilePath = await StaticMethods.SaveImageAsync(shopImage, shopUploadsFolder);
 
                 if (encryptedShopFilePath != null)
                 {

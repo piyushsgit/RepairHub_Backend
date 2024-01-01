@@ -50,8 +50,13 @@ namespace Common.Helper
         public const string InvalidSport = "Invalid Sport.";
         public const string GroundNotBelongs = "Ground not belongs to login vendor.";
 
-      
-        
+        //Request
+        public const string RequestGenrated = "Request Genrated";
+        public const string FailToGenerateRequest = "Fail To Generate Request";
+
+
+
+
 
     }
 }

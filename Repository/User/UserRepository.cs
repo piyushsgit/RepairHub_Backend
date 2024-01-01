@@ -1,10 +1,13 @@
-﻿using Common.CommonMethods;
+﻿using Azure.Core;
+using Common.CommonMethods;
 using Common.Helper;
 using Dapper;
 using Data;
 using Model.dbModels;
+using Model.RequestModel;
 using Model.UsersModels;
 using System.Data;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace Repository.User
@@ -70,28 +73,28 @@ namespace Repository.User
             parameters.Add("@CreatedBy", userReg.CreatedBy);
             parameters.Add("@Password", userReg.Password);
             parameters.Add("@ProfileImage", userReg.ProfileImage);
-            if(userReg.UserTypeId != 3)
+            if (userReg.UserTypeId != 3)
             {
-            parameters.Add("@ShopName", userReg.ShopName);
-            parameters.Add("@ShopOwnerName", userReg.ShopOwnerName);
-            parameters.Add("@AddharNumber", userReg.AddharNumber);
-            parameters.Add("@PanNumber", userReg.PanNumber);
-            parameters.Add("@ShopDescription", userReg.ShopDescription);
-            parameters.Add("@ShopRepairType", userReg.ShopRepairType);
-            parameters.Add("@Since", userReg.Since);
-            parameters.Add("@AsociateWith", userReg.AsociateWith);
-            parameters.Add("@Country", userReg.Country);
-            parameters.Add("@State", userReg.State);
-            parameters.Add("@City", userReg.City);
-            parameters.Add("@Address", userReg.Address);
-            parameters.Add("@Area", userReg.Area);
-            parameters.Add("@AddressType", userReg.AddressType);
-            parameters.Add("@AccountNo", userReg.AccountNo);
-            parameters.Add("@AccountHolderName", userReg.AccountHolderName);
-            parameters.Add("@BankName", userReg.BankName);
-            parameters.Add("@IFSC_Code", userReg.IFSC_Code);
-            parameters.Add("@UPI_Detail", userReg.UPI_Detail);
-            parameters.Add("@shopImageList", string.Join(",", userReg.ShopImageName));
+                parameters.Add("@ShopName", userReg.ShopName);
+                parameters.Add("@ShopOwnerName", userReg.ShopOwnerName);
+                parameters.Add("@AddharNumber", userReg.AddharNumber);
+                parameters.Add("@PanNumber", userReg.PanNumber);
+                parameters.Add("@ShopDescription", userReg.ShopDescription);
+                parameters.Add("@ShopRepairType", userReg.ShopRepairType);
+                parameters.Add("@Since", userReg.Since);
+                parameters.Add("@AsociateWith", userReg.AsociateWith);
+                parameters.Add("@Country", userReg.Country);
+                parameters.Add("@State", userReg.State);
+                parameters.Add("@City", userReg.City);
+                parameters.Add("@Address", userReg.Address);
+                parameters.Add("@Area", userReg.Area);
+                parameters.Add("@AddressType", userReg.AddressType);
+                parameters.Add("@AccountNo", userReg.AccountNo);
+                parameters.Add("@AccountHolderName", userReg.AccountHolderName);
+                parameters.Add("@BankName", userReg.BankName);
+                parameters.Add("@IFSC_Code", userReg.IFSC_Code);
+                parameters.Add("@UPI_Detail", userReg.UPI_Detail);
+                parameters.Add("@shopImageList", string.Join(",", userReg.ShopImageName));
             }
 
             int data = await ExecuteAsync<int>("SP_RegisterUser", parameters, commandType: CommandType.StoredProcedure);
@@ -100,7 +103,7 @@ namespace Repository.User
         }
 
 
-        public async Task<List<ShopDetails>> GetFilterShopAsync(string FilterType,int Rating, int PageSize,int PageNumber)
+        public async Task<List<ShopDetails>> GetFilterShopAsync(string FilterType, int Rating, int PageSize, int PageNumber)
         {
             var parameters = new DynamicParameters();
             parameters.Add("@FilterType", FilterType);
@@ -113,10 +116,10 @@ namespace Repository.User
         }
         public async Task<List<ShopTypes>> GetShopTypeAsync()
         {
-           
+
             var result = await QueryAsync<ShopTypes>(StoreProcedures.ShopType, commandType: CommandType.StoredProcedure);
             return result.ToList();
-
+        }
 
         public async Task<LoginModelResponse> SignInGoogle(SignInGoogle userLogin)
         {
@@ -128,6 +131,41 @@ namespace Repository.User
             return await QueryFirstOrDefaultAsync<LoginModelResponse>("SignInWithGoogle", param, commandType: CommandType.StoredProcedure);
 
         }
+
+        public async Task<InsertRequestResponsemodel> InsertRequest(InsertRequestmodel req)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@UserId", req.UserId);
+            parameters.Add("@ShopId", req.ShopId);
+            parameters.Add("@Description", req.Description);
+            parameters.Add("@UserAddressId", req.UserAddressId);
+            parameters.Add("@CreatedBy", req.CreatedBy);
+            parameters.Add("@RequestImageList", string.Join(",", req.RequestImageName));
+
+
+
+            return await QueryFirstOrDefaultAsync<InsertRequestResponsemodel>("InsertRequest", parameters, commandType: CommandType.StoredProcedure);
+
+
+        }
+        public async Task<List<statusModel>> RequestStauts(int requestId)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@requestId", requestId);
+
+            return (await QueryAsync<statusModel>("[GetTimelineUpdate]", parameters, commandType: CommandType.StoredProcedure)).ToList();
+
+        }
+        public async Task<List<GetAddress>> GetUserAddreess(int userId)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@userid", userId);
+
+            return (await QueryAsync<GetAddress>("GetAddressByUserId", parameters, commandType: CommandType.StoredProcedure)).ToList();
+
+        }
+        
+
     }
 }
 
