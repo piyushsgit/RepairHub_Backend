@@ -277,9 +277,9 @@ namespace Services.User
         {
             return await _accountRepository.GetShopBrandsAsync();
         }
-        public async Task<List<SearchData>> GetSearchDataAsync(string SearchParameter)
+        public async Task<List<SearchData>> GetSearchDataAsync(string SearchParameter, int PageSize, int PageNumber)
         {
-            return await _accountRepository.GetSearchDataAsync(SearchParameter);
+            return await _accountRepository.GetSearchDataAsync(SearchParameter, PageSize, PageNumber);
         }
     }
 }

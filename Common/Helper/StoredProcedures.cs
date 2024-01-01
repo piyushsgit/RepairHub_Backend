@@ -16,7 +16,7 @@
         public const string ShopType = "SelectIdAndFieldName";
         public const string GetImages = "sp_selectImageById";
         public const string GetBrands = "SelectTopBrands";
-        public const string GetSearchData = "SearchShops";
+        public const string GetSearchData = "SearchShops1";
 
 
         #endregion

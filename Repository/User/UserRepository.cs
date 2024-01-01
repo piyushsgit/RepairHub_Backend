@@ -128,18 +128,20 @@ namespace Repository.User
             var result = await QueryAsync<ShopTypes>(StoreProcedures.ShopType, commandType: CommandType.StoredProcedure);
             return result.ToList();
         }
-        }
+
+       
+    
         public async Task<List<TopBrands>> GetShopBrandsAsync()
         {
-
             var result = await QueryAsync<TopBrands>(StoreProcedures.GetBrands, commandType: CommandType.StoredProcedure);
             return result.ToList();
-
         }
-        public async Task<List<SearchData>> GetSearchDataAsync(string SearchParameter)
+        public async Task<List<SearchData>> GetSearchDataAsync(string SearchParameter,int PageSize, int PageNumber)
         {
             var parameters = new DynamicParameters();
             parameters.Add("@SearchParameter", SearchParameter);
+            parameters.Add("@PageSize", PageSize);
+            parameters.Add("@PageNumber", PageNumber);
             var result = await QueryAsync<SearchData>(StoreProcedures.GetSearchData, parameters, commandType: CommandType.StoredProcedure);
             return result.ToList();
 

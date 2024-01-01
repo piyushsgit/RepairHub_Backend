@@ -20,7 +20,7 @@ namespace RepairHub.Areas.Users.Controllers
         }
 
         [HttpPost]
-        public async Task<ApiPostResponse<LoginModelResponse>> LoginWithContact(LoginWithContact login)
+        public async  Task<ApiPostResponse<LoginModelResponse>> LoginWithContact(LoginWithContact login)
         {
             return await UserService.Loginuser(login);
         }
@@ -88,10 +88,7 @@ namespace RepairHub.Areas.Users.Controllers
         {
             
             return await UserService.SignInGoogle(login);
-        }
-
-
-        }
+        }        
 
         [HttpGet]
         public async Task<IActionResult> ShopTypes()
@@ -104,9 +101,10 @@ namespace RepairHub.Areas.Users.Controllers
             return Ok(await UserService.GetShopBrandsAsync());
         }
         [HttpGet]
-        public async Task<IActionResult> SearchData(string SearchParameter)
+        public async Task<IActionResult> SearchData(string SearchParameter, int PageSize, int PageNumber)
         {
-            return Ok(await UserService.GetSearchDataAsync(SearchParameter));
+            return Ok(await UserService.GetSearchDataAsync(SearchParameter, PageSize, PageNumber));
         }
     }
 }
+

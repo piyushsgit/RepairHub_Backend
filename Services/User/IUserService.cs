@@ -14,11 +14,15 @@ namespace Services.User
 
         public Task<ApiPostResponse<int>> RegisterUser(RegistrationUserModel regData);
 
+
         public Task<ApiPostResponse<LoginModelResponse>> SignInGoogle(SignInGoogle userLogin);
         public Task<List<ShopDetails>> GetFilterShopAsync(string FilterType, int Rating, int PageSize, int PageNumber);
         public Task<List<ShopTypes>> GetShopTypeAsync();
 
         public Task<List<TopBrands>> GetShopBrandsAsync();
-        public Task<List<SearchData>> GetSearchDataAsync(string SearchParameter);
+        public Task<List<SearchData>> GetSearchDataAsync(string SearchParameter, int PageSize, int PageNumber);
+       
+
+
     }
 }
