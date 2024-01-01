@@ -1,6 +1,7 @@
 ﻿using Common.Helper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Model.RequestModel;
 using Model.UsersModels;
 using Services.User;
 
@@ -79,12 +80,13 @@ namespace RepairHub.Areas.Users.Controllers
         [HttpGet]
         public async Task<IActionResult> FilterShop(string FilterType, int Rating, int PageSize, int PageNumber)
         {
-            return  Ok(await UserService.GetFilterShopAsync(FilterType,Rating,PageSize, PageNumber));
+            return Ok(await UserService.GetFilterShopAsync(FilterType, Rating, PageSize, PageNumber));
 
+        }
         [HttpPost]
         public async Task<ApiPostResponse<LoginModelResponse>> SignInGoogle(SignInGoogle login)
         {
-            
+
             return await UserService.SignInGoogle(login);
 
         }
@@ -95,9 +97,19 @@ namespace RepairHub.Areas.Users.Controllers
             return Ok(await UserService.GetShopTypeAsync());
         }
         [HttpPost]
-        public async Task<ApiPostResponse<int>> InsertRequest([FromForm]  InsertRequestmodel req)
+        public async Task<ApiPostResponse<string>> InsertRequest([FromForm] InsertRequestmodel req)
         {
             return await UserService.InsertRequest(req);
+        }
+        [HttpGet]
+        public async Task<ApiPostResponse<List<statusModel>>> RequestStaus(string request)
+        {
+            return await UserService.RequestStauts(request);
+        }
+        [HttpGet]
+        public async Task<ApiPostResponse<List<GetAddress>>> GetUserAddreess(string Id)
+        {
+            return await UserService.GetUserAddreess(Id);      
         }
     }
 }

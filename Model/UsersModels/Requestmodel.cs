@@ -16,6 +16,11 @@ namespace Model.UsersModels
         public long UserAddressId { get; set; }
         public DateTime? CreatedBy { get; set; }
         public IFormFile[]? RequestImage { get; set; }
-        public List<string>?  RequestImageName { get; set; }
+        public List<string>? RequestImageName { get; set; }
+    }
+    public class InsertRequestResponsemodel
+    {
+        public long RequestId { get; set; }
+       
     }
 }

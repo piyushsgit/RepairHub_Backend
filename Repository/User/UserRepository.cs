@@ -1,8 +1,10 @@
-﻿using Common.CommonMethods;
+﻿using Azure.Core;
+using Common.CommonMethods;
 using Common.Helper;
 using Dapper;
 using Data;
 using Model.dbModels;
+using Model.RequestModel;
 using Model.UsersModels;
 using System.Data;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -101,7 +103,7 @@ namespace Repository.User
         }
 
 
-        public async Task<List<ShopDetails>> GetFilterShopAsync(string FilterType,int Rating, int PageSize,int PageNumber)
+        public async Task<List<ShopDetails>> GetFilterShopAsync(string FilterType, int Rating, int PageSize, int PageNumber)
         {
             var parameters = new DynamicParameters();
             parameters.Add("@FilterType", FilterType);
@@ -114,10 +116,10 @@ namespace Repository.User
         }
         public async Task<List<ShopTypes>> GetShopTypeAsync()
         {
-           
+
             var result = await QueryAsync<ShopTypes>(StoreProcedures.ShopType, commandType: CommandType.StoredProcedure);
             return result.ToList();
-
+        }
 
         public async Task<LoginModelResponse> SignInGoogle(SignInGoogle userLogin)
         {
@@ -130,7 +132,7 @@ namespace Repository.User
 
         }
 
-        public async Task<int> InsertRequest(InsertRequestmodel req)
+        public async Task<InsertRequestResponsemodel> InsertRequest(InsertRequestmodel req)
         {
             var parameters = new DynamicParameters();
             parameters.Add("@UserId", req.UserId);
@@ -142,10 +144,28 @@ namespace Repository.User
 
 
 
-            return   await ExecuteAsync<int>("InsertRequest", parameters, commandType: CommandType.StoredProcedure);
+            return await QueryFirstOrDefaultAsync<InsertRequestResponsemodel>("InsertRequest", parameters, commandType: CommandType.StoredProcedure);
 
-            
+
         }
+        public async Task<List<statusModel>> RequestStauts(int requestId)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@requestId", requestId);
+
+            return (await QueryAsync<statusModel>("[GetTimelineUpdate]", parameters, commandType: CommandType.StoredProcedure)).ToList();
+
+        }
+        public async Task<List<GetAddress>> GetUserAddreess(int userId)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@userid", userId);
+
+            return (await QueryAsync<GetAddress>("GetAddressByUserId", parameters, commandType: CommandType.StoredProcedure)).ToList();
+
+        }
+        
+
     }
 }
 

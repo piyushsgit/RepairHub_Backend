@@ -18,6 +18,7 @@ using System.Security.Claims;
 using System.Text;
 using Org.BouncyCastle.Ocsp;
 using Model.dbModels;
+using Model.RequestModel;
 
 namespace Services.User
 {
@@ -185,8 +186,8 @@ namespace Services.User
 
             // Define the directory path where you want to save the images
             string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "ProfileImages");
-            regData.ProfileImage =await StaticMethods.SaveImageAsync(regData.image,uploadsFolder);
-            
+            regData.ProfileImage = await StaticMethods.SaveImageAsync(regData.image, uploadsFolder);
+
             RegistrationModel model = new RegistrationModel()
             {
                 FirstName = regData.FirstName,
@@ -260,9 +261,9 @@ namespace Services.User
 
 
         #region Request Insert
-        public async Task<ApiPostResponse<int>> InsertRequest(InsertRequestmodel req)
+        public async Task<ApiPostResponse<string>> InsertRequest(InsertRequestmodel req)
         {
-            ApiPostResponse<int> response = new ApiPostResponse<int>();
+            ApiPostResponse<string> response = new ApiPostResponse<string>();
 
             if (req == null || req.RequestImage == null || req.RequestImage.Length == 0)
             {
@@ -286,19 +287,73 @@ namespace Services.User
             }
             req.RequestImageName = encryptedRequestFilePaths;
             // Check if an image is uploaded
-          
+
             var result = await _accountRepository.InsertRequest(req);
 
-            if (result!=null)
+            if (result != null)
             {
-                
+                string id = StaticMethods.GetEncrypt(result.RequestId.ToString());
+                response.Data = id;
                 response.Success = true;
                 response.Message = ErrorMessages.RequestGenrated;
             }
             else
             {
                 response.Success = false;
-                response.Message =ErrorMessages.FailToGenerateRequest;
+                response.Message = ErrorMessages.FailToGenerateRequest;
+            }
+            return response;
+        }
+        #endregion
+
+        #region RequestStatus
+
+        public async Task<ApiPostResponse<List<statusModel>>> RequestStauts(string requestId)
+        {
+            ApiPostResponse<List<statusModel>> response = new ApiPostResponse<List<statusModel>>();
+
+            var request = StaticMethods.GetDecrypt(requestId);
+            if (int.TryParse(request, out int parsedRequest))
+            {
+
+                var data = await _accountRepository.RequestStauts(parsedRequest);
+                if (data != null)
+                {
+                    response.Data = data;
+                    response.Success = true;
+                    response.Message = ErrorMessages.Success;
+
+                }
+
+                return response;
+            }
+            else
+            {
+                // Handle the case where the decryption result couldn't be converted to an integer
+
+                response.Success = false;
+                response.Message = ErrorMessages.Error;
+                return response;
+            }
+
+
+        }
+        #endregion
+
+        #region GetUserAddress
+        public async Task<ApiPostResponse<List<GetAddress>>> GetUserAddreess(string userId)
+        {
+            ApiPostResponse<List<GetAddress>> response = new ApiPostResponse<List<GetAddress>>();
+            int parsedUserId = Convert.ToInt32(userId);
+            var data = await _accountRepository.GetUserAddreess(parsedUserId);
+
+            if (data != null)
+            {
+                response.Data = data; response.Success = true; response.Message = ErrorMessages.Success;
+            }
+            else
+            {
+                response.Success = false; response.Message = ErrorMessages.Error;
             }
             return response;
         }

@@ -1,5 +1,6 @@
 ﻿using Common.Helper;
 using Model.dbModels;
+using Model.RequestModel;
 using Model.UsersModels; 
 namespace Services.User
 {
@@ -16,10 +17,13 @@ namespace Services.User
         public Task<List<ShopDetails>> GetFilterShopAsync(string FilterType, int Rating, int PageSize, int PageNumber);
         public Task<List<ShopTypes>> GetShopTypeAsync();
 
-        
+
 
 
         public Task<ApiPostResponse<LoginModelResponse>> SignInGoogle(SignInGoogle userLogin);
-        public Task<ApiPostResponse< int>> InsertRequest(InsertRequestmodel req);
+        public Task<ApiPostResponse<string>> InsertRequest(InsertRequestmodel req);
+
+        public Task<ApiPostResponse<List<statusModel>>> RequestStauts(string requestId);
+        public  Task<ApiPostResponse< List<GetAddress>>> GetUserAddreess(string userId);
     }
 }
