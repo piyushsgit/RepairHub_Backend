@@ -24,7 +24,7 @@ namespace Services.User
         public Task<List<SearchData>> GetSearchDataAsync(string SearchParameter, int PageSize, int PageNumber);
        
 
-        public Task<ApiPostResponse<LoginModelResponse>> SignInGoogle(SignInGoogle userLogin);
+     
         public Task<ApiPostResponse<string>> InsertRequest(InsertRequestmodel req);
 
         public Task<ApiPostResponse<List<statusModel>>> RequestStauts(string requestId);

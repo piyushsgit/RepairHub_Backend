@@ -1,6 +1,7 @@
 ﻿using Common.Helper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Model.RequestModel;
 using Model.UsersModels;
 using Services.User;
 
@@ -108,8 +109,8 @@ namespace RepairHub.Areas.Users.Controllers
         {
             return await UserService.GetUserAddreess(Id);      
         }
-    }
-}
+    
+
         [HttpGet]
         public async Task<IActionResult> GetShopBrands()
         {

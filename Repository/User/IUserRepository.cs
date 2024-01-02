@@ -23,8 +23,6 @@ namespace Repository.User
         public Task<List<ShopDetails>> GetFilterShopAsync(string FilterType, int Rating, int PageSize, int PageNumber);
         public Task<List<ShopTypes>> GetShopTypeAsync();
 
-
-        public Task<LoginModelResponse> SignInGoogle(SignInGoogle userLogin);
         public Task<InsertRequestResponsemodel> InsertRequest(InsertRequestmodel req);
 
         public Task<List<statusModel>> RequestStauts(int requestId);

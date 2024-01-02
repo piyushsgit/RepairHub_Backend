@@ -19,19 +19,22 @@ namespace Model.ShopDetails
         public int Rating { get; set; }
         public string? ShopTypes { get; set; }
         [StringLength(100)]
-       
+
         public string Country { get; set; } = null!;
 
         [StringLength(100)]
-      
+
         public string State { get; set; } = null!;
 
         [StringLength(100)]
-       
+
         public string City { get; set; } = null!;
         public string Address { get; set; }
+        public string EncryptshopId { get; set; }
 
         [StringLength(100)]
-        public string  Area { get; set; }
+        public string Area { get; set; }
     }
+
+    
 }

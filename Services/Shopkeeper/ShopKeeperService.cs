@@ -24,9 +24,10 @@ namespace Services.Shopkeeper
         {
             return shopkeeperRepo.GetShopDetails();
         }
-        public  Task<ShopDetailsById> GetShopDetailsById(long id)
+        public  Task<ShopDetailsById> GetShopDetailsById(string id)
         {
-            return shopkeeperRepo.GetShopDetailsById(id);
+             var decryptId=Convert.ToInt32(StaticMethods.GetDecrypt(id));
+            return shopkeeperRepo.GetShopDetailsById(decryptId);
              
         }
         public async Task<ApiPostResponse<int>> RegisterShop(RegistrationModel regData)
@@ -94,9 +95,10 @@ namespace Services.Shopkeeper
 
             return uniqueFileName;
         }
-        public async Task<List<ImageModel>> GetShopImageById(int id)
+        public async Task<List<ImageModel>> GetShopImageById(string id)
         {
-            return await shopkeeperRepo.GetShopImageById(id);
+            var decryptId = Convert.ToInt32(StaticMethods.GetDecrypt(id));
+            return await shopkeeperRepo.GetShopImageById(decryptId);
         }
     }
 }

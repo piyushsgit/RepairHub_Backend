@@ -365,7 +365,14 @@ namespace Services.User
         }
         public async Task<List<SearchData>> GetSearchDataAsync(string SearchParameter, int PageSize, int PageNumber)
         {
-            return await _accountRepository.GetSearchDataAsync(SearchParameter, PageSize, PageNumber);
+            var data = await _accountRepository.GetSearchDataAsync(SearchParameter, PageSize, PageNumber);
+             for(int i  = 0; i < data.Count; i++)
+            {
+                data[i].EncryptshopId = StaticMethods.GetEncrypt(data[i].Id.ToString());
+                data[i].Id = 0;
+            }
+
+            return data;
         }
     }
 }

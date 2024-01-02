@@ -10,9 +10,9 @@ namespace Services.Shopkeeper
     {
         public Task<List<ShopDetails>> GeShopDetails();
 
-        public Task<ShopDetailsById> GetShopDetailsById(long id);
+        public Task<ShopDetailsById> GetShopDetailsById(string id);
 
         public Task<ApiPostResponse<int>> RegisterShop(RegistrationModel regData);
-        public Task<List<ImageModel>> GetShopImageById(int id);
+        public Task<List<ImageModel>> GetShopImageById(string id);
     }
 }

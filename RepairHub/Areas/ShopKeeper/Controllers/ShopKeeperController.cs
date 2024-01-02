@@ -27,7 +27,7 @@ namespace RepairHub.Areas.ShopKeeper.Controllers
         }
 
         [HttpGet]
-        public Task<ShopDetailsById> GetShopDetailsById(long id)
+        public Task<ShopDetailsById> GetShopDetailsById(string id)
         {
             return shopKeeperService.GetShopDetailsById(id);
         }
@@ -38,7 +38,7 @@ namespace RepairHub.Areas.ShopKeeper.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetShopImage(int id)
+        public async Task<IActionResult> GetShopImage(string id)
         {
             return Ok(await shopKeeperService.GetShopImageById(id));
         }
