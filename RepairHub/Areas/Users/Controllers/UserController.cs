@@ -109,7 +109,12 @@ namespace RepairHub.Areas.Users.Controllers
         [HttpGet]
         public async Task<ApiPostResponse<List<GetAddress>>> GetUserAddreess(string Id)
         {
-            return await UserService.GetUserAddreess(Id);      
+            return await UserService.GetUserAddreess(Id);
+        }
+        [HttpPost]
+        public async Task<ApiPostResponse<int>> InsertAddress( AddressInsertModel req)
+        {
+            return await UserService.InsertAddress(req);
         }
     }
 }

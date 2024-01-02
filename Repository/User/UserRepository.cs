@@ -164,7 +164,27 @@ namespace Repository.User
             return (await QueryAsync<GetAddress>("GetAddressByUserId", parameters, commandType: CommandType.StoredProcedure)).ToList();
 
         }
-        
+
+        public async Task<int> InsertAddress(AddressInsertModel address)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@Id", address.Id);
+            parameters.Add("@UserId", address.UserId);
+            parameters.Add("@ShopId", address.ShopId);
+            parameters.Add("@Country", address.Country);
+            parameters.Add("@State", address.State);
+            parameters.Add("@City", address.City);
+            parameters.Add("@Address", address.Address);
+            parameters.Add("@Area", address.Area);
+            parameters.Add("@AddressType", address.AddressType);
+            parameters.Add("@Latitude", address.Latitude);
+            parameters.Add("@Decription", address.Decription);
+            parameters.Add("@Longitude", address.Longitude);
+
+            return await ExecuteAsync<int>("UpdateInsertAddress", parameters, commandType: CommandType.StoredProcedure);
+        }
+
+
 
     }
 }

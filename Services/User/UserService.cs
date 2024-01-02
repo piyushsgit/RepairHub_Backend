@@ -359,5 +359,24 @@ namespace Services.User
         }
         #endregion
 
+
+        #region AddUpdateAddress
+        public async Task<ApiPostResponse<int>> InsertAddress(AddressInsertModel address)
+        {
+            ApiPostResponse<int> response = new ApiPostResponse<int>();
+            
+            var data = await _accountRepository.InsertAddress(address);
+
+            if (data ==1)
+            {
+                response.Data = data; response.Success = true; response.Message = ErrorMessages.Success;
+            }
+            else
+            {
+                response.Success = false; response.Message = ErrorMessages.Error;
+            }
+            return response;
+        }
+        #endregion
     }
 }

@@ -29,6 +29,7 @@ namespace Repository.User
         public Task<InsertRequestResponsemodel> InsertRequest(InsertRequestmodel req);
 
         public Task<List<statusModel>> RequestStauts(int requestId);
-        public  Task<List<GetAddress>> GetUserAddreess(int userId);
+        public Task<List<GetAddress>> GetUserAddreess(int userId);
+        public Task<int> InsertAddress(AddressInsertModel address);
     }
 }
