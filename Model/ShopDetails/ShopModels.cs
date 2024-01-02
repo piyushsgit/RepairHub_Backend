@@ -27,6 +27,7 @@ namespace Model.ShopDetails
             public long Id { get; set; }
             [StringLength(255)]
             public string? ShopType { get; set; }
+
         }
         public class ShopDetailsById
         {
@@ -58,6 +59,7 @@ namespace Model.ShopDetails
            
 
         }
+        
 
     }
 }

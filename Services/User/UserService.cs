@@ -18,6 +18,7 @@ using System.Security.Claims;
 using System.Text;
 using Org.BouncyCastle.Ocsp;
 using Model.dbModels;
+using Model.ShopDetails;
 using Model.RequestModel;
 
 namespace Services.User
@@ -358,6 +359,18 @@ namespace Services.User
             return response;
         }
         #endregion
+        public async Task<List<TopBrands>> GetShopBrandsAsync()
+        {
+            return await _accountRepository.GetShopBrandsAsync();
+        }
+        public async Task<List<SearchData>> GetSearchDataAsync(string SearchParameter, int PageSize, int PageNumber)
+        {
+            var data = await _accountRepository.GetSearchDataAsync(SearchParameter, PageSize, PageNumber);
+             for(int i  = 0; i < data.Count; i++)
+            {
+                data[i].EncryptshopId = StaticMethods.GetEncrypt(data[i].Id.ToString());
+                data[i].Id = 0;
+            }
 
 
         #region AddUpdateAddress

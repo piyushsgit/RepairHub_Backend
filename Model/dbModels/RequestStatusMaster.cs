@@ -21,3 +21,4 @@ public partial class RequestStatusMaster
     [Unicode(false)]
     public string DisplayName { get; set; } = null!;
 }
+

@@ -26,7 +26,7 @@ namespace Repository.Shopkeeper
             dp.Add("@Id", id);
             return await QueryFirstOrDefaultAsync<ShopDetailsById>(StoreProcedures.GetShopDetailsById, dp, commandType: CommandType.StoredProcedure);
         }
-        public async Task<List<ImageModel>> GetShopImageById(int id)
+        public async Task<List<ImageModel>> GetShopImageById(long id)
         {
             var dp = new DynamicParameters();
             dp.Add("@ShopId", id);

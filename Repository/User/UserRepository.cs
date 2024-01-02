@@ -4,6 +4,7 @@ using Common.Helper;
 using Dapper;
 using Data;
 using Model.dbModels;
+using Model.ShopDetails;
 using Model.RequestModel;
 using Model.UsersModels;
 using System.Data;
@@ -102,8 +103,18 @@ namespace Repository.User
             return data;
         }
 
+        public async Task<LoginModelResponse> SignInGoogle(SignInGoogle userLogin)
+        {
+            var param = new DynamicParameters();
+            param.Add("@Email", userLogin.Email);
+            param.Add("@FirstName", userLogin.FirstName);
+            param.Add("@LastName", userLogin.LastName);
+            param.Add("@ProfileImage", userLogin.ProfileImage);
+            return await QueryFirstOrDefaultAsync<LoginModelResponse>("SignInWithGoogle", param, commandType: CommandType.StoredProcedure);
+             
+        }
 
-        public async Task<List<ShopDetails>> GetFilterShopAsync(string FilterType, int Rating, int PageSize, int PageNumber)
+        public async Task<List<ShopDetails>> GetFilterShopAsync(string FilterType,int Rating, int PageSize,int PageNumber)
         {
             var parameters = new DynamicParameters();
             parameters.Add("@FilterType", FilterType);
@@ -121,14 +132,21 @@ namespace Repository.User
             return result.ToList();
         }
 
-        public async Task<LoginModelResponse> SignInGoogle(SignInGoogle userLogin)
+       
+    
+        public async Task<List<TopBrands>> GetShopBrandsAsync()
         {
-            var param = new DynamicParameters();
-            param.Add("@Email", userLogin.Email);
-            param.Add("@FirstName", userLogin.FirstName);
-            param.Add("@LastName", userLogin.LastName);
-            param.Add("@ProfileImage", userLogin.ProfileImage);
-            return await QueryFirstOrDefaultAsync<LoginModelResponse>("SignInWithGoogle", param, commandType: CommandType.StoredProcedure);
+            var result = await QueryAsync<TopBrands>(StoreProcedures.GetBrands, commandType: CommandType.StoredProcedure);
+            return result.ToList();
+        }
+        public async Task<List<SearchData>> GetSearchDataAsync(string SearchParameter,int PageSize, int PageNumber)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("@SearchParameter", SearchParameter);
+            parameters.Add("@PageSize", PageSize);
+            parameters.Add("@PageNumber", PageNumber);
+            var result = await QueryAsync<SearchData>(StoreProcedures.GetSearchData, parameters, commandType: CommandType.StoredProcedure);
+            return result.ToList();
 
         }
 
