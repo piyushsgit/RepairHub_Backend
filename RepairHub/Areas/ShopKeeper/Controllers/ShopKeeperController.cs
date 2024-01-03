@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc; 
+﻿using Common.Helper;
+using Microsoft.AspNetCore.Mvc;
+using Model.ShopDetails;
+using Model.UsersModels;
+using Microsoft.AspNetCore.Authorization;
+
 using Services.Shopkeeper;
  
 using static Model.ShopDetails.ShopModels;
@@ -16,7 +20,7 @@ namespace RepairHub.Areas.ShopKeeper.Controllers
  
         private readonly IShopKeeperService shopKeeperService;
 
-        public ShopKeeperController(IShopKeeperService shopKeeperService)
+        public ShopKeeperController(IUserService authenticateService, IShopKeeperService shopKeeperService)
         {
  
             this.shopKeeperService = shopKeeperService;
@@ -25,7 +29,24 @@ namespace RepairHub.Areas.ShopKeeper.Controllers
         [HttpGet]
         public Task<List<ShopDetails>> GetShopDetails()
         {
-            return  shopKeeperService.GeShopDetails();
+            return shopKeeperService.GeShopDetails();
+        }
+
+        [HttpGet]
+        public Task<ShopDetailsById> GetShopDetailsById(string id)
+        {
+            return shopKeeperService.GetShopDetailsById(id);
+        }
+        [HttpPost]
+        public  Task<ApiPostResponse<int>> RegisterShop ([FromForm] RegistrationModel regData)
+        {
+            return  shopKeeperService.RegisterShop(regData);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetShopImage(string id)
+        {
+            return Ok(await shopKeeperService.GetShopImageById(id));
         }
     }
 }

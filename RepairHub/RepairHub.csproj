@@ -25,4 +25,10 @@
     <ProjectReference Include="..\Services\Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Asset\Images\" />
+    <Folder Include="wwwroot\RequestImages\" />
+    <Folder Include="wwwroot\ProfileImages\" />
+  </ItemGroup>
+
 </Project>

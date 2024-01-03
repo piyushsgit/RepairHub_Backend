@@ -16,4 +16,6 @@ public partial class ShopTypes
     [StringLength(50)]
     [Unicode(false)]
     public string ShopType { get; set; } = null!;
+
+    public string ImageURL { get; set; }
 }

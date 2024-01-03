@@ -1,18 +1,28 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Azure;
+using Microsoft.Identity.Client.Extensions.Msal;
+using System.ComponentModel.DataAnnotations;
 namespace Model.UsersModels
 {
     public class LoginWithEmail // For Admin
     {
         [Required]
         public string? Email { get; set; }
-        public string? Password { get; set; } 
+        public string? Password { get; set; }
 
     }
     public class LoginWithContact // For Customer and Shop keeper
-    {  
+    {
         public string? ContactNo { get; set; }
         public int? Otp { get; set; }
 
+    }
+
+    public class SignInGoogle 
+    {
+        public string? Email { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? ProfileImage { get; set; }
     }
     public class OtpVerification
     {
@@ -35,9 +45,14 @@ namespace Model.UsersModels
         public string JwdToken { get; set; }
         public int UserTypeId { get; set; }
         public string IsVarified { get; set; }
+        public string First_Name { get; set; }
+        public string tokenExpiration { get; set; }
+        public string userTypeId { get; set; }
         public string message { get; set; }
-        
+        public string profileImage { get; set; }
+
     }
+
     public class ForgotPassword {
         public int Type { get; set; }
         public string? Email { get; set; }

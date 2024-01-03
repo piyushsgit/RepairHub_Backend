@@ -5,6 +5,10 @@ using MailKit.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using MimeKit;
@@ -17,7 +21,10 @@ using System.IdentityModel.Tokens.Jwt;
 
 using System.Security.Claims;
 using System.Text;
-
+using Org.BouncyCastle.Ocsp;
+using Model.dbModels;
+using Model.ShopDetails;
+using Model.RequestModel;
 
 namespace Services.User
 {
@@ -114,7 +121,7 @@ namespace Services.User
             var result = await _accountRepository.Generateopt(null,req.EmailId); 
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress("Repaihub", _nonStatic.GetConfigurationValue(AppSettingsJason.EmailSettings.UserName)));
-            message.To.Add(new MailboxAddress(req.EmailId, req.EmailId)); 
+            message.To.Add(new MailboxAddress(req.EmailId, req.EmailId));
             if (req.type == 1) // for email verication
             {
                 message.Subject = "Email Verification";
@@ -136,7 +143,7 @@ namespace Services.User
                 bodyBuilder.HtmlBody = $" Your Otp is: {result.otp} for Change Password.Please don't share If your are not trying to change your pasword. (Your OTP is only valid for 2 Minutes) ";
                 message.Body = bodyBuilder.ToMessageBody();
             }
- 
+
             using var client = new SmtpClient();
             await client.ConnectAsync(_nonStatic.GetConfigurationValue(AppSettingsJason.EmailSettings.SmtpServer), Convert.ToInt32(_nonStatic.GetConfigurationValue(AppSettingsJason.EmailSettings.Port)), SecureSocketOptions.StartTls);
             await client.AuthenticateAsync(_nonStatic.GetConfigurationValue(AppSettingsJason.EmailSettings.UserName), _nonStatic.GetConfigurationValue(AppSettingsJason.EmailSettings.Password));
@@ -193,7 +200,7 @@ namespace Services.User
             return tokenModel;
         }
 
-        #region Encrypt Password
+        #region Register user
         //public static string GetHash(string input)
         //{
         //    using (SHA256 sha256Hash = SHA256.Create())
@@ -213,6 +220,223 @@ namespace Services.User
         //        return builder.ToString();
         //    }
         //}
+        #endregion
+
+        public async Task<ApiPostResponse<int>> RegisterUser(RegistrationUserModel regData)
+        {
+            ApiPostResponse<int> response = new ApiPostResponse<int>();
+
+            if (regData == null || regData.image == null || regData.image.Length == 0)
+            {
+                response.Success = false;
+                return response;
+            }
+
+            // Define the directory path where you want to save the images
+            string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "ProfileImages");
+            regData.ProfileImage = await StaticMethods.SaveImageAsync(regData.image, uploadsFolder);
+
+            RegistrationModel model = new RegistrationModel()
+            {
+                FirstName = regData.FirstName,
+                LastName = regData.LastName,
+                Password = regData.Password,
+                ContactNo = regData.ContactNo,
+                EmailId = regData.EmailId,
+                ProfileImage = regData.ProfileImage,
+                UserTypeId = 3
+            };
+
+            var result = await _accountRepository.RegisterUser(model);
+
+            if (result == 1)
+            {
+                response.Data = result;
+                response.Success = true;
+                response.Message = ErrorMessages.CustomerRegistrationSuccess;
+            }
+            else
+            {
+                response.Success = false;
+                response.Message = "Failure";
+            }
+            return response;
+
+        }
+
+        public async Task<List<ShopDetails>> GetFilterShopAsync(string FilterType, int Rating, int PageSize, int PageNumber)
+        {
+            return await _accountRepository.GetFilterShopAsync(FilterType, Rating, PageSize, PageNumber);
+        }
+
+        public async Task<List<ShopTypes>> GetShopTypeAsync()
+        {
+            return await _accountRepository.GetShopTypeAsync();
+        }
+
+
+        #region Siginwithgoogle
+        public async Task<ApiPostResponse<LoginModelResponse>> SignInGoogle(SignInGoogle userLogin)
+        {
+            var res = new ApiPostResponse<LoginModelResponse>();
+            var data = await _accountRepository.SignInGoogle(userLogin);
+            if (data == null)
+            {
+                res.Success = false;
+                res.Message = data.message;
+                return res;
+            }
+            else
+            {
+                res.Data = new LoginModelResponse
+                {
+                    JwdToken = Login(userLogin.Email, "User"),
+                    Id = data.Id,
+                    userTypeId = data.userTypeId,
+                    tokenExpiration = _nonStatic.GetConfigurationValue(AppSettingsJason.JwtToken.TimeOutMin),
+                    EmailId = data.EmailId,
+                    profileImage = data.profileImage,
+                    IsVarified = data.IsVarified,
+                    First_Name = data.First_Name
+
+                };
+                res.Success = true;
+                res.Message = ErrorMessages.LoginSuccess;
+                return res;
+            }
+        }
+        #endregion
+
+
+        #region Request Insert
+        public async Task<ApiPostResponse<string>> InsertRequest(InsertRequestmodel req)
+        {
+            ApiPostResponse<string> response = new ApiPostResponse<string>();
+
+            if (req == null || req.RequestImage == null || req.RequestImage.Length == 0)
+            {
+                response.Success = false;
+                return response;
+            }
+
+
+            List<string> encryptedRequestFilePaths = new List<string>();
+            // Define the directory path where you want to save the images
+            string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "RequestImages");
+
+            foreach (var requestImage in req.RequestImage)
+            {
+                string encryptedRequestFilePath = await StaticMethods.SaveImageAsync(requestImage, uploadsFolder);
+
+                if (encryptedRequestFilePath != null)
+                {
+                    encryptedRequestFilePaths.Add(encryptedRequestFilePath);
+                }
+            }
+            req.RequestImageName = encryptedRequestFilePaths;
+            // Check if an image is uploaded
+
+            var result = await _accountRepository.InsertRequest(req);
+
+            if (result != null)
+            {
+                string id = StaticMethods.GetEncrypt(result.RequestId.ToString());
+                response.Data = id;
+                response.Success = true;
+                response.Message = ErrorMessages.RequestGenrated;
+            }
+            else
+            {
+                response.Success = false;
+                response.Message = ErrorMessages.FailToGenerateRequest;
+            }
+            return response;
+        }
+        #endregion
+
+        #region RequestStatus
+
+        public async Task<ApiPostResponse<List<statusModel>>> RequestStauts(string requestId)
+        {
+            ApiPostResponse<List<statusModel>> response = new ApiPostResponse<List<statusModel>>();
+
+            var request = StaticMethods.GetDecrypt(requestId);
+            if (int.TryParse(request, out int parsedRequest))
+            {
+
+                var data = await _accountRepository.RequestStauts(parsedRequest);
+                if (data != null)
+                {
+                    response.Data = data;
+                    response.Success = true;
+                    response.Message = ErrorMessages.Success;
+
+                }
+
+                return response;
+            }
+            else
+            {
+                // Handle the case where the decryption result couldn't be converted to an integer
+
+                response.Success = false;
+                response.Message = ErrorMessages.Error;
+                return response;
+            }
+
+
+        }
+        #endregion
+
+        #region GetUserAddress
+        public async Task<ApiPostResponse<List<GetAddress>>> GetUserAddreess(string userId)
+        {
+            ApiPostResponse<List<GetAddress>> response = new ApiPostResponse<List<GetAddress>>();
+            int parsedUserId = Convert.ToInt32(userId);
+            var data = await _accountRepository.GetUserAddreess(parsedUserId);
+
+            if (data != null)
+            {
+                response.Data = data; response.Success = true; response.Message = ErrorMessages.Success;
+            }
+            else
+            {
+                response.Success = false; response.Message = ErrorMessages.Error;
+            }
+            return response;
+        }
+        #endregion
+        public async Task<List<TopBrands>> GetShopBrandsAsync()
+        {
+            return await _accountRepository.GetShopBrandsAsync();
+        }
+        public async Task<List<SearchData>> GetSearchDataAsync(string SearchParameter, int PageSize, int PageNumber)
+        {
+            var data = await _accountRepository.GetSearchDataAsync(SearchParameter, PageSize, PageNumber);
+             for(int i  = 0; i < data.Count; i++)
+            {
+                data[i].EncryptshopId = StaticMethods.GetEncrypt(data[i].Id.ToString());
+                data[i].Id = 0;
+            }
+
+
+        #region AddUpdateAddress
+        public async Task<ApiPostResponse<int>> InsertAddress(AddressInsertModel address)
+        {
+            ApiPostResponse<int> response = new ApiPostResponse<int>();
+            
+            var data = await _accountRepository.InsertAddress(address);
+
+            if (data ==1)
+            {
+                response.Data = data; response.Success = true; response.Message = ErrorMessages.Success;
+            }
+            else
+            {
+                response.Success = false; response.Message = ErrorMessages.Error;
+            }
+            return response;
+        }
         #endregion
     }
 }
