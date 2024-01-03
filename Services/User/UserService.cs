@@ -291,7 +291,7 @@ namespace Services.User
             {
                 res.Data = new LoginModelResponse
                 {
-                    JwdToken = Login(userLogin.Email, "User"),
+                    JwdToken = GenerateJwtToken(userLogin.Email, "User"),
                     Id = data.Id,
                     userTypeId = data.userTypeId,
                     tokenExpiration = _nonStatic.GetConfigurationValue(AppSettingsJason.JwtToken.TimeOutMin),

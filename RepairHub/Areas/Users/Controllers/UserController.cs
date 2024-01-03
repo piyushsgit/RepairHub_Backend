@@ -5,8 +5,10 @@ using Model.UsersModels;
 using Org.BouncyCastle.Ocsp;
 using Services.User;
 using System.Web.Http;
+using HttpGetAttribute = Microsoft.AspNetCore.Mvc.HttpGetAttribute;
 using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
+
 
 namespace RepairHub.Areas.Users.Controllers
 {

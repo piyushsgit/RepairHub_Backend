@@ -9,6 +9,7 @@ using Services.Shopkeeper;
 using static Model.ShopDetails.ShopModels;
 using HttpGetAttribute = Microsoft.AspNetCore.Mvc.HttpGetAttribute;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
+using Services.User;
 
 namespace RepairHub.Areas.ShopKeeper.Controllers
 {
