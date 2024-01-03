@@ -11,6 +11,8 @@
         {
             public const string SecreatKey = "JwtToken:SecreatKey";
             public const string TimeOutMin = "JwtToken:TimeOutMin";
+            public const string Issuer = "JwtToken:Issuer";
+            public const string Audience = "JwtToken:Audience";
         }
         public class EmailSettings
         {

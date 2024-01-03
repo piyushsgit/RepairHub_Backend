@@ -11,9 +11,9 @@ namespace Services.User
     {
         public Task<ApiPostResponse<LoginModelResponse>> Loginuser(LoginWithContact model);
         public Task<ApiPostResponse<LoginModelResponse>> AdminLogin(LoginWithEmail model);
-        public Task<OtpVerificationResponse> Generateopt(string? ContactNo, Email? email);
+        public Task<OtpVerificationResponse> Generateopt(string? ContactNo, Email? req);
         public Task<Message> ForgotPassword(ForgotPassword forgot);
-
+        public TokenModel GetUserTokenData(string jwtToken = null);
 
         public Task<ApiPostResponse<int>> RegisterUser(RegistrationUserModel regData);
 
