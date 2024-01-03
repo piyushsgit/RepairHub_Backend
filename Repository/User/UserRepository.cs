@@ -156,7 +156,6 @@ namespace Repository.User
             parameters.Add("@ShopId", req.ShopId);
             parameters.Add("@Description", req.Description);
             parameters.Add("@UserAddressId", req.UserAddressId);
-            parameters.Add("@CreatedBy", req.CreatedBy);
             parameters.Add("@RequestImageList", string.Join(",", req.RequestImageName));
 
 

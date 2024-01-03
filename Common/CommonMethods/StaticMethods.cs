@@ -70,7 +70,7 @@ namespace Common.CommonMethods
             // Step 1. We hash the passphrase using MD5
             // We use the MD5 hash generator as the result is a 128 bit byte array
             // which is a valid length for the TripleDES encoder we use below
-            MD5CryptoServiceProvider hashProvider = new MD5CryptoServiceProvider();
+            MD5CryptoServiceProvider hashProvider = new();
             byte[] tdesKey = hashProvider.ComputeHash(utf8.GetBytes(strKey));
 
             // Step 2. Create a new TripleDESCryptoServiceProvider object
@@ -127,7 +127,7 @@ namespace Common.CommonMethods
             // Step 1. We hash the passphrase using MD5
             // We use the MD5 hash generator as the result is a 128 bit byte array
             // which is a valid length for the TripleDES encoder we use below
-            MD5CryptoServiceProvider hashProvider = new MD5CryptoServiceProvider();
+            MD5CryptoServiceProvider hashProvider = new();
             byte[] tdesKey = hashProvider.ComputeHash(utf8.GetBytes(strKey));
 
             // Step 2. Create a new TripleDESCryptoServiceProvider object

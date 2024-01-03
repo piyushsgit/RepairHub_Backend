@@ -32,7 +32,7 @@ namespace Services.Shopkeeper
         }
         public async Task<ApiPostResponse<int>> RegisterShop(RegistrationModel regData)
         {
-            ApiPostResponse<int> response = new ApiPostResponse<int>();
+            ApiPostResponse<int> response = new ();
 
             string profileUploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "ProfileImages");
             regData.ProfileImage = await StaticMethods.SaveImageAsync(regData.image, profileUploadsFolder);
@@ -43,7 +43,7 @@ namespace Services.Shopkeeper
                 response.Success = false;
                 return response;
             }
-            List<string> encryptedShopFilePaths = new List<string>();
+            List<string> encryptedShopFilePaths = new ();
 
             string shopUploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "ShopImages");
 

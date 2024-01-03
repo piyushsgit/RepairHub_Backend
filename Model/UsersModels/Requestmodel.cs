@@ -10,12 +10,12 @@ namespace Model.UsersModels
 {
     public class InsertRequestmodel
     {
-        public long UserId { get; set; }
-        public long ShopId { get; set; }
+        public string? UserId { get; set; }
+        public string? ShopId { get; set; }
         public string? Description { get; set; }
-        public long UserAddressId { get; set; }
-        public DateTime? CreatedBy { get; set; }
-        public IFormFile[]? RequestImage { get; set; }
+        public string? Tittle { get; set; }
+        public long? UserAddressId { get; set; }
+       
         public List<string>? RequestImageName { get; set; }
     }
     public class InsertRequestResponsemodel
