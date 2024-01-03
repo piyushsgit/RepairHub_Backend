@@ -56,7 +56,6 @@ namespace Repository.User
             var param = new DynamicParameters();
             param.Add("@Type", forgot.Type);
             param.Add("@Email", forgot.Email);
-            param.Add("@MobileNo", forgot.contact);
             param.Add("@OTP", forgot.Otp);
             param.Add("@NewPassword", forgot.NewPassword);
 

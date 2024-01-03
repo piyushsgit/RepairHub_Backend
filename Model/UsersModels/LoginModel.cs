@@ -1,6 +1,9 @@
 ﻿using Azure;
 using Microsoft.Identity.Client.Extensions.Msal;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+using System.Xml.Serialization;
+
 namespace Model.UsersModels
 {
     public class LoginWithEmail // For Admin
@@ -41,22 +44,24 @@ namespace Model.UsersModels
     public class LoginModelResponse
     {
         public int Id { get; set; }
+        public string? EncryptedId { get; set; }
         public string EmailId { get; set; }
         public string JwdToken { get; set; }
         public int UserTypeId { get; set; }
         public string IsVarified { get; set; }
         public string First_Name { get; set; }
-        public string tokenExpiration { get; set; }
-        public string userTypeId { get; set; }
+        public DateTime tokenExpiration { get; set; }
+ 
         public string message { get; set; }
         public string profileImage { get; set; }
 
     }
 
     public class ForgotPassword {
-        public int Type { get; set; }
-        public string? Email { get; set; }
-        public string? contact { get; set; }
+        [JsonIgnore]
+        [XmlIgnore]
+        public int? Type { get; set; }
+        public string? Email { get; set; } 
         public string? Otp { get; set; }
         public string? NewPassword { get; set; }
     }

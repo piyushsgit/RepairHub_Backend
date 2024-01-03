@@ -4,7 +4,9 @@ using Model.RequestModel;
 using Model.UsersModels;
 using Services.User;
 using System.Web.Http;
+using HttpGetAttribute = Microsoft.AspNetCore.Mvc.HttpGetAttribute;
 using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
+
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace RepairHub.Areas.Users.Controllers
@@ -24,7 +26,7 @@ namespace RepairHub.Areas.Users.Controllers
         [HttpPost]
         public async  Task<ApiPostResponse<LoginModelResponse>> LoginWithContact(LoginWithContact login)
         {
-            return await UserService.Loginuser(login);
+            return await UserService.LoginWithContact(login);
         }
 
         [HttpPost]
