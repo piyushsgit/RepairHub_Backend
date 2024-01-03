@@ -24,6 +24,7 @@ namespace Model.UsersModels
     {
         public int Id { get; set; }
         public string? otpExpiryTime { get; set; }
+        public string? EmailId { get; set; }
         public int? otp { get; set; }
     }
 
@@ -32,6 +33,7 @@ namespace Model.UsersModels
         public int Id { get; set; }
         public string EmailId { get; set; }
         public string JwdToken { get; set; }
+        public int UserTypeId { get; set; }
         public string IsVarified { get; set; }
         public string message { get; set; }
         
@@ -47,10 +49,21 @@ namespace Model.UsersModels
     {
         public string? message { get; set; }
     }
-
+    public class UserTokenModel
+    {
+        public decimal UserId { get; set; }
+        public decimal RoleId { get; set; }
+        public string Role { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? PhoneNo { get; set; }
+        public string? EmailId { get; set; }
+        public string UserLoginId { get; set; }
+        public DateTime TokenValidTo { get; set; }
+    }
     public class Email
     {
         public int? type { get; set; }
-        public string? EmailId { get; set;}
+        public string? EmailId { get; set; } = null;
     }
 }

@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.1.24" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.1" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.0-preview3.23201.1" />
     <PackageReference Include="Microsoft.Owin" Version="4.2.2" />
     <PackageReference Include="Microsoft.Owin.Cors" Version="4.2.2" />

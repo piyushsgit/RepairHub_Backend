@@ -8,7 +8,7 @@ using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace RepairHub.Areas.Users.Controllers
 {
-    
+ 
     [Route("api/Users/[controller]/[Action]")]
     [ApiController]
     public class UserController : ControllerBase
