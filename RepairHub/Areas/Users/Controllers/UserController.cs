@@ -46,15 +46,13 @@ namespace RepairHub.Areas.Users.Controllers
         {
             return await UserService.VerifyEmail(Verify);
         }
-
-
+         
         [HttpPost]
-        public async Task<Message> ForgotPassword(ForgotPasswordAndVerifyEmail forgot)
+        public async Task<Message> ForgotPasswordORChangePassword(ForgotPasswordAndVerifyEmail forgot)
         {
             return await UserService.ForgotPassword(forgot);
         }
-
-
+  
         [HttpPost]
         public async Task<ApiPostResponse<int>> RegisterUser([FromForm] RegistrationUserModel regData)
         {
