@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Model.RequestModel;
 using Model.UsersModels;
+using Org.BouncyCastle.Ocsp;
 using Services.User;
 
 
@@ -126,6 +127,13 @@ namespace RepairHub.Areas.Users.Controllers
         {
             return Ok(await UserService.GetSearchDataAsync(SearchParameter, PageSize, PageNumber));
         }
+        [HttpPost]
+        public async Task<ApiPostResponse<List<string>>> UploadImage([FromForm] IFormFile[] images)
+        {
+            return await UserService.UploadImages(images);
+        }
+
     }
+
 }
 

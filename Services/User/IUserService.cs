@@ -2,7 +2,9 @@
 using Model.dbModels;
 using Model.ShopDetails;
 using Model.RequestModel;
-using Model.UsersModels; 
+using Model.UsersModels;
+using Microsoft.AspNetCore.Http;
+
 namespace Services.User
 {
     public interface IUserService
@@ -29,5 +31,7 @@ namespace Services.User
         public Task<ApiPostResponse<List<statusModel>>> RequestStauts(string requestId);
         public  Task<ApiPostResponse< List<GetAddress>>> GetUserAddreess(string userId);
         public Task<ApiPostResponse<int>> InsertAddress(AddressInsertModel address);
+
+        public Task<ApiPostResponse<List<string>>> UploadImages(IFormFile[] images);
     }
 }

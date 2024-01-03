@@ -20,6 +20,7 @@ using Org.BouncyCastle.Ocsp;
 using Model.dbModels;
 using Model.ShopDetails;
 using Model.RequestModel;
+using Microsoft.AspNetCore.Http;
 
 namespace Services.User
 {
@@ -189,7 +190,7 @@ namespace Services.User
             string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "ProfileImages");
             regData.ProfileImage = await StaticMethods.SaveImageAsync(regData.image, uploadsFolder);
 
-            RegistrationModel model = new RegistrationModel()
+            RegistrationModel model = new()
             {
                 FirstName = regData.FirstName,
                 LastName = regData.LastName,
@@ -266,27 +267,27 @@ namespace Services.User
         {
             ApiPostResponse<string> response = new ApiPostResponse<string>();
 
-            if (req == null || req.RequestImage == null || req.RequestImage.Length == 0)
-            {
-                response.Success = false;
-                return response;
-            }
+            //if (req == null || req.RequestImage == null || req.RequestImage.Length == 0)
+            //{
+            //    response.Success = false;
+            //    return response;
+            //}
 
 
-            List<string> encryptedRequestFilePaths = new List<string>();
-            // Define the directory path where you want to save the images
-            string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "RequestImages");
+            //List<string> encryptedRequestFilePaths = new List<string>();
+            //// Define the directory path where you want to save the images
+            //string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "RequestImages");
 
-            foreach (var requestImage in req.RequestImage)
-            {
-                string encryptedRequestFilePath = await StaticMethods.SaveImageAsync(requestImage, uploadsFolder);
+            //foreach (var requestImage in req.RequestImage)
+            //{
+            //    string encryptedRequestFilePath = await StaticMethods.SaveImageAsync(requestImage, uploadsFolder);
 
-                if (encryptedRequestFilePath != null)
-                {
-                    encryptedRequestFilePaths.Add(encryptedRequestFilePath);
-                }
-            }
-            req.RequestImageName = encryptedRequestFilePaths;
+            //    if (encryptedRequestFilePath != null)
+            //    {
+            //        encryptedRequestFilePaths.Add(encryptedRequestFilePath);
+            //    }
+            //}
+            //req.RequestImageName = encryptedRequestFilePaths;
             // Check if an image is uploaded
 
             var result = await _accountRepository.InsertRequest(req);
@@ -378,10 +379,10 @@ namespace Services.User
         public async Task<ApiPostResponse<int>> InsertAddress(AddressInsertModel address)
         {
             ApiPostResponse<int> response = new ApiPostResponse<int>();
-            
+
             var data = await _accountRepository.InsertAddress(address);
 
-            if (data ==1)
+            if (data == 1)
             {
                 response.Data = data; response.Success = true; response.Message = ErrorMessages.Success;
             }
@@ -392,5 +393,51 @@ namespace Services.User
             return response;
         }
         #endregion
+
+
+        #region  uploadImage
+        public async Task<ApiPostResponse<List<string>>> UploadImages(IFormFile[] images)
+        {
+            ApiPostResponse<List<string>> response = new ApiPostResponse<List<string>>();
+
+            if (images == null || images.Length == 0)
+            {
+                response.Success = false;
+                return response;
+            }
+
+
+            List<string> encryptedRequestFilePaths = new List<string>();
+            // Define the directory path where you want to save the images
+            string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "RequestImages");
+
+            foreach (var requestImage in images)
+            {
+                string encryptedRequestFilePath = await StaticMethods.SaveImageAsync(requestImage, uploadsFolder);
+
+                if (encryptedRequestFilePath != null)
+                {
+                    encryptedRequestFilePaths.Add(encryptedRequestFilePath);
+                }
+            }
+            
+            if(encryptedRequestFilePaths.Count > 0)
+            {
+                response.Success = true;
+                response.Data = encryptedRequestFilePaths;
+                response.Message = "ImageUploadSuuccessfully";
+            }
+            else
+            {
+                response.Success = false;
+            }
+             return response;
+        }
+
+          
+
+        #endregion
     }
 }
+
+
