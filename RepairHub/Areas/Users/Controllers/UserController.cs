@@ -5,7 +5,9 @@ using Model.UsersModels;
 using Org.BouncyCastle.Ocsp;
 using Services.User;
 using System.Web.Http;
+using HttpGetAttribute = Microsoft.AspNetCore.Mvc.HttpGetAttribute;
 using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
+
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace RepairHub.Areas.Users.Controllers
@@ -25,7 +27,7 @@ namespace RepairHub.Areas.Users.Controllers
         [HttpPost]
         public async  Task<ApiPostResponse<LoginModelResponse>> LoginWithContact(LoginWithContact login)
         {
-            return await UserService.Loginuser(login);
+            return await UserService.LoginWithContact(login);
         }
 
         [HttpPost]
@@ -40,9 +42,15 @@ namespace RepairHub.Areas.Users.Controllers
             return await UserService.Generateopt(ContactNo, null);
         }
 
+        [HttpPost]
+        public async Task<Message> VerifyEmail(ForgotPasswordAndVerifyEmail Verify)
+        {
+            return await UserService.VerifyEmail(Verify);
+        }
+
 
         [HttpPost]
-        public async Task<Message> ForgotPassword(ForgotPassword forgot)
+        public async Task<Message> ForgotPassword(ForgotPasswordAndVerifyEmail forgot)
         {
             return await UserService.ForgotPassword(forgot);
         }

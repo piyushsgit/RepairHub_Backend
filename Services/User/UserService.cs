@@ -5,27 +5,25 @@ using MailKit.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
-
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using MimeKit;
 using Model.AppSettingsJason;
 using Model.dbModels;
+using Model.RequestModel;
+using Model.ShopDetails;
 using Model.UsersModels;
-using Newtonsoft.Json;
 using Repository.User;
 using System.IdentityModel.Tokens.Jwt;
-
 using System.Security.Claims;
 using System.Text;
+
 using Org.BouncyCastle.Ocsp;
 using Model.dbModels;
 using Model.ShopDetails;
 using Model.RequestModel;
 using Microsoft.AspNetCore.Http;
+
 
 namespace Services.User
 {
@@ -46,7 +44,7 @@ namespace Services.User
         }
         #endregion
 
-        public async Task<ApiPostResponse<LoginModelResponse>> Loginuser(LoginWithContact model)
+        public async Task<ApiPostResponse<LoginModelResponse>> LoginWithContact(LoginWithContact model)
         {
             var res = new ApiPostResponse<LoginModelResponse>();
             var roll ="";
@@ -66,13 +64,17 @@ namespace Services.User
             }
             else
             {
+                 var encryptUserId = StaticMethods.GetEncrypt(loginModelResponse.Id.ToString());
                 res.Data = new LoginModelResponse
                 {
-                    Id = loginModelResponse.Id,
+                    EncryptedId = encryptUserId,
                     EmailId = loginModelResponse.EmailId,
                     JwdToken = GenerateJwtToken(model.ContactNo, roll),
                     UserTypeId = loginModelResponse.UserTypeId,
-                    IsVarified = loginModelResponse.IsVarified
+                    IsVarified = loginModelResponse.IsVarified,
+                    tokenExpiration = DateTime.UtcNow.AddMinutes(Convert.ToInt32(_nonStatic.GetConfigurationValue(AppSettingsJason.JwtToken.TimeOutMin))),
+                    First_Name = loginModelResponse.First_Name,
+                    profileImage = loginModelResponse.profileImage
                 };
                 res.Success = true;
                 
@@ -100,13 +102,17 @@ namespace Services.User
             }
             else
             {
+                var encryptUserId = StaticMethods.GetEncrypt(loginModelResponse.Id.ToString());
                 res.Data = new LoginModelResponse
                 {
-                    Id=loginModelResponse.Id,
-                    EmailId=loginModelResponse.EmailId,
+                    EncryptedId = encryptUserId,
+                    EmailId = loginModelResponse.EmailId,
                     JwdToken = GenerateJwtToken(model.Email, roll),
                     UserTypeId = loginModelResponse.UserTypeId,
-                    IsVarified=loginModelResponse.IsVarified
+                    IsVarified = loginModelResponse.IsVarified,
+                    tokenExpiration = DateTime.UtcNow.AddMinutes(Convert.ToInt32(_nonStatic.GetConfigurationValue(AppSettingsJason.JwtToken.TimeOutMin))),
+                    First_Name =loginModelResponse.First_Name,
+                    profileImage=loginModelResponse.profileImage
                 };
                 res.Success = true;
                 res.Message = ErrorMessages.LoginSuccess;
@@ -173,13 +179,16 @@ namespace Services.User
 
             return tokenString;
         }
-
-
-        public Task<Message> ForgotPassword(ForgotPassword forgot)
+        public async Task<Message> VerifyEmail(ForgotPasswordAndVerifyEmail verify)
         {
-            throw new NotImplementedException();
+            verify.Type = 1;
+            return await _accountRepository.ForgotPasswordAndVerifyEmail(verify);
         }
-         
+        public async Task<Message> ForgotPassword(ForgotPasswordAndVerifyEmail forgot)
+        {
+            forgot.Type = 2;
+            return await _accountRepository.ForgotPasswordAndVerifyEmail(forgot); 
+        }
         public TokenModel GetUserTokenData(string jwtToken = null)
         {
             string Token = string.Empty;
@@ -200,7 +209,6 @@ namespace Services.User
             }
             return tokenModel;
         }
-
         #region Register user
         //public static string GetHash(string input)
         //{
@@ -222,7 +230,6 @@ namespace Services.User
         //    }
         //}
         #endregion
-
         public async Task<ApiPostResponse<int>> RegisterUser(RegistrationUserModel regData)
         {
             ApiPostResponse<int> response = new ApiPostResponse<int>();
@@ -243,7 +250,7 @@ namespace Services.User
                 LastName = regData.LastName,
                 Password = regData.Password,
                 ContactNo = regData.ContactNo,
-                EmailId = regData.EmailId,
+                EmailId = regData.EmailId, 
                 ProfileImage = regData.ProfileImage,
                 UserTypeId = 3
             };
@@ -264,23 +271,24 @@ namespace Services.User
             return response;
 
         }
-
         public async Task<List<ShopDetails>> GetFilterShopAsync(string FilterType, int Rating, int PageSize, int PageNumber)
         {
             return await _accountRepository.GetFilterShopAsync(FilterType, Rating, PageSize, PageNumber);
         }
-
         public async Task<List<ShopTypes>> GetShopTypeAsync()
         {
             return await _accountRepository.GetShopTypeAsync();
         }
-
-
         #region Siginwithgoogle
         public async Task<ApiPostResponse<LoginModelResponse>> SignInGoogle(SignInGoogle userLogin)
         {
             var res = new ApiPostResponse<LoginModelResponse>();
+            var roll ="";
             var data = await _accountRepository.SignInGoogle(userLogin);
+            if (data.UserTypeId == 2)
+                roll = Rolls.Shopkeeper;
+            else if (data.UserTypeId == 3)
+                roll = Rolls.User;
             if (data == null)
             {
                 res.Success = false;
@@ -291,10 +299,10 @@ namespace Services.User
             {
                 res.Data = new LoginModelResponse
                 {
-                    JwdToken = Login(userLogin.Email, "User"),
+                    JwdToken = GenerateJwtToken(userLogin.Email, roll),
                     Id = data.Id,
-                    userTypeId = data.userTypeId,
-                    tokenExpiration = _nonStatic.GetConfigurationValue(AppSettingsJason.JwtToken.TimeOutMin),
+                    UserTypeId = data.UserTypeId,
+                    tokenExpiration = DateTime.UtcNow.AddMinutes(Convert.ToInt32(_nonStatic.GetConfigurationValue(AppSettingsJason.JwtToken.TimeOutMin))),
                     EmailId = data.EmailId,
                     profileImage = data.profileImage,
                     IsVarified = data.IsVarified,
@@ -307,8 +315,6 @@ namespace Services.User
             }
         }
         #endregion
-
-
         #region Request Insert
         public async Task<ApiPostResponse<string>> InsertRequest(InsertRequestmodel req)
         {
@@ -354,7 +360,6 @@ namespace Services.User
             return response;
         }
         #endregion
-
         #region RequestStatus
 
         public async Task<ApiPostResponse<List<statusModel>>> RequestStauts(string requestId)
