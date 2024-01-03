@@ -1,6 +1,9 @@
 ﻿namespace Model.UsersModels
 {
-    public class UserRegisterModel
-    { 
+    public class TokenModel
+    {
+        public string UserName { get; set; }
+        public DateTime ValidTo { get; set; }
+
     }
 }
