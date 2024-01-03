@@ -41,9 +41,15 @@ namespace RepairHub.Areas.Users.Controllers
             return await UserService.Generateopt(ContactNo, null);
         }
 
+        [HttpPost]
+        public async Task<Message> VerifyEmail(ForgotPasswordAndVerifyEmail Verify)
+        {
+            return await UserService.VerifyEmail(Verify);
+        }
+
 
         [HttpPost]
-        public async Task<Message> ForgotPassword(ForgotPassword forgot)
+        public async Task<Message> ForgotPassword(ForgotPasswordAndVerifyEmail forgot)
         {
             return await UserService.ForgotPassword(forgot);
         }

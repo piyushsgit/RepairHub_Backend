@@ -17,7 +17,7 @@ namespace Repository.User
         public Task<LoginModelResponse> UserLogin(LoginWithContact userLogin);
         public Task<LoginModelResponse> AdminLogin(LoginWithEmail userLogin);
         public Task<OtpVerificationResponse> Generateopt(string? ContactNo, string? email);
-        public Task<Message> ForgotPassword(ForgotPassword forgot);
+        public Task<Message> ForgotPasswordAndVerifyEmail(ForgotPasswordAndVerifyEmail forgot);
         public Task<int> RegisterUser(RegistrationModel userReg);
         public Task<LoginModelResponse> SignInGoogle(SignInGoogle userLogin);
         public Task<List<ShopDetails>> GetFilterShopAsync(string FilterType, int Rating, int PageSize, int PageNumber);

@@ -50,8 +50,8 @@ namespace Repository.User
             return await QueryFirstOrDefaultAsync<OtpVerificationResponse>(StoreProcedures.GenerateOtp, param, commandType: CommandType.StoredProcedure);
         }
 
-
-        public async Task<Message> ForgotPassword(ForgotPassword forgot)
+      
+        public async Task<Message> ForgotPasswordAndVerifyEmail(ForgotPasswordAndVerifyEmail forgot)
         {
             var param = new DynamicParameters();
             param.Add("@Type", forgot.Type);

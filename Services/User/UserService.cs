@@ -5,19 +5,18 @@ using MailKit.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
-
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using MimeKit;
 using Model.AppSettingsJason;
 using Model.dbModels;
+using Model.RequestModel;
+using Model.ShopDetails;
 using Model.UsersModels;
 using Repository.User;
-using System.IdentityModel.Tokens.Jwt; 
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Model.ShopDetails;
-using Model.RequestModel; 
 namespace Services.User
 {
     public class UserService : IUserService
@@ -172,14 +171,16 @@ namespace Services.User
 
             return tokenString;
         }
-
-
-        public async Task<Message> ForgotPassword(ForgotPassword forgot)
+        public async Task<Message> VerifyEmail(ForgotPasswordAndVerifyEmail verify)
+        {
+            verify.Type = 1;
+            return await _accountRepository.ForgotPasswordAndVerifyEmail(verify);
+        }
+        public async Task<Message> ForgotPassword(ForgotPasswordAndVerifyEmail forgot)
         {
             forgot.Type = 2;
-            return await _accountRepository.ForgotPassword(forgot); 
+            return await _accountRepository.ForgotPasswordAndVerifyEmail(forgot); 
         }
-         
         public TokenModel GetUserTokenData(string jwtToken = null)
         {
             string Token = string.Empty;
@@ -200,7 +201,6 @@ namespace Services.User
             }
             return tokenModel;
         }
-
         #region Register user
         //public static string GetHash(string input)
         //{
@@ -222,7 +222,6 @@ namespace Services.User
         //    }
         //}
         #endregion
-
         public async Task<ApiPostResponse<int>> RegisterUser(RegistrationUserModel regData)
         {
             ApiPostResponse<int> response = new ApiPostResponse<int>();
@@ -264,18 +263,14 @@ namespace Services.User
             return response;
 
         }
-
         public async Task<List<ShopDetails>> GetFilterShopAsync(string FilterType, int Rating, int PageSize, int PageNumber)
         {
             return await _accountRepository.GetFilterShopAsync(FilterType, Rating, PageSize, PageNumber);
         }
-
         public async Task<List<ShopTypes>> GetShopTypeAsync()
         {
             return await _accountRepository.GetShopTypeAsync();
         }
-
-
         #region Siginwithgoogle
         public async Task<ApiPostResponse<LoginModelResponse>> SignInGoogle(SignInGoogle userLogin)
         {
@@ -312,8 +307,6 @@ namespace Services.User
             }
         }
         #endregion
-
-
         #region Request Insert
         public async Task<ApiPostResponse<string>> InsertRequest(InsertRequestmodel req)
         {
@@ -359,7 +352,6 @@ namespace Services.User
             return response;
         }
         #endregion
-
         #region RequestStatus
 
         public async Task<ApiPostResponse<List<statusModel>>> RequestStauts(string requestId)

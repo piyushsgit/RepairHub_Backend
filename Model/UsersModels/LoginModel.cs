@@ -1,6 +1,4 @@
-﻿using Azure;
-using Microsoft.Identity.Client.Extensions.Msal;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 
@@ -57,7 +55,7 @@ namespace Model.UsersModels
 
     }
 
-    public class ForgotPassword {
+    public class ForgotPasswordAndVerifyEmail {
         [JsonIgnore]
         [XmlIgnore]
         public int? Type { get; set; }
