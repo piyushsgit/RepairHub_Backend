@@ -28,7 +28,7 @@ namespace Repository.User
         public Task<List<statusModel>> RequestStauts(int requestId);
         public Task<List<GetAddress>> GetUserAddreess(int userId);
         public Task<int> InsertAddress(AddressInsertModel address);
-        public  Task<List<GetAddress>> GetUserAddreess(int userId);
+        
         public Task<List<TopBrands>> GetShopBrandsAsync();
         public Task<List<SearchData>> GetSearchDataAsync(string SearchParameter, int PageSize, int PageNumber);
     }
