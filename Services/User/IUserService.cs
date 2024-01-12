@@ -27,7 +27,7 @@ namespace Services.User
        
 
         public Task<ApiPostResponse<LoginModelResponse>> SignInGoogle(SignInGoogle userLogin);
-        public Task<ApiPostResponse<string>> InsertRequest(InsertRequestmodel req);
+        
 
         public Task<ApiPostResponse<List<statusModel>>> RequestStauts(string requestId);
         public  Task<ApiPostResponse< List<GetAddress>>> GetUserAddreess(string userId);

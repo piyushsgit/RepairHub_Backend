@@ -10,6 +10,7 @@ using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
 
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
+
 namespace RepairHub.Areas.Users.Controllers
 {
  
@@ -81,7 +82,7 @@ namespace RepairHub.Areas.Users.Controllers
         [HttpPost]
         public async Task<OtpVerificationResponse> SendOtpForChangePassword(string EmailId)
         {
-            var email = new Email();
+            Email email = new();
             email.type = 3;
             email.EmailId = EmailId;
             return await UserService.Generateopt(null, email);
@@ -105,11 +106,11 @@ namespace RepairHub.Areas.Users.Controllers
         {
             return Ok(await UserService.GetShopTypeAsync());
         }
-        [HttpPost]
-        public async Task<ApiPostResponse<string>> InsertRequest([FromForm] InsertRequestmodel req)
-        {
-            return await UserService.InsertRequest(req);
-        }
+        //[HttpPost]
+        //public async Task<ApiPostResponse<string>> InsertRequest([FromForm] InsertRequestmodel req)
+        //{
+        //    return await UserService.InsertRequest(req);
+        //}
         [HttpGet]
         public async Task<ApiPostResponse<List<statusModel>>> RequestStaus(string request)
         {

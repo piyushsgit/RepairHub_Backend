@@ -65,5 +65,7 @@ public partial class ShopDetails
 
     [Unicode(false)]
     public string AsociateWith { get; set; } = null!;
+
+    public string? EntryptId { get; set; }
     public int TotalCount { get; set; }
 }

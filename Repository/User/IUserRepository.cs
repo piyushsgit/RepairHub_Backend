@@ -23,7 +23,7 @@ namespace Repository.User
         public Task<List<ShopDetails>> GetFilterShopAsync(string FilterType, int Rating, int PageSize, int PageNumber);
         public Task<List<ShopTypes>> GetShopTypeAsync();
 
-        public Task<InsertRequestResponsemodel> InsertRequest(InsertRequestmodel req);
+        
 
         public Task<List<statusModel>> RequestStauts(int requestId);
         public Task<List<GetAddress>> GetUserAddreess(int userId);
@@ -31,5 +31,6 @@ namespace Repository.User
         
         public Task<List<TopBrands>> GetShopBrandsAsync();
         public Task<List<SearchData>> GetSearchDataAsync(string SearchParameter, int PageSize, int PageNumber);
+
     }
 }

@@ -22,16 +22,7 @@ namespace Model.RequestModel
         public long? Id { get; set; }
     }
 
-    public class UserFirstRequest
-    {
-        public string? UserId { get; set; }
-        public IFormFile[]? DefectProductImages { get; set; }
-        public string? Tittle { get; set; }
-        public string? Description { get; set; }
-
-        public long? AddressId { get; set; }
-
-    }
+  
   
 
 
