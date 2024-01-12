@@ -17,6 +17,7 @@
         public const string GetImages = "sp_selectImageById";
         public const string GetBrands = "SelectTopBrands";
         public const string GetSearchData = "SearchShops1";
+        public const string GetShopsByLocation = "[getShopDetailsbyLocationOrRatting]";
 
 
         #endregion

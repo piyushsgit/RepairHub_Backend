@@ -34,6 +34,15 @@ namespace Repository.Shopkeeper
             return result.ToList();
         }
 
+        public async Task<List<ShopDetailsById>> GetShopsDetailsBylocation(Location location)
+        {
+            var dp = new DynamicParameters();
+            dp.Add("@Latitude",location.latitude);
+            dp.Add("@Longitude", location.longitude);
+            dp.Add("@RadiusInKms", location.RadiusInKms);
+            var result = await QueryAsync<ShopDetailsById>(StoreProcedures.GetShopsByLocation, dp, commandType: CommandType.StoredProcedure);
+            return result.ToList();
+        }
     }
 }
     

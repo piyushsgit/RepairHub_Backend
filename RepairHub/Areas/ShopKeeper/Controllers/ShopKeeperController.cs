@@ -49,5 +49,10 @@ namespace RepairHub.Areas.ShopKeeper.Controllers
         {
             return Ok(await shopKeeperService.GetShopImageById(id));
         }
+        [HttpPost]
+        public Task<List<ShopDetailsById>> GetShopsByLocation(Location location)
+        {
+            return shopKeeperService.GetShopsDetailsBylocation(location);
+        }
     }
 }

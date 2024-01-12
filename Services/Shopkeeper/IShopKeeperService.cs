@@ -14,5 +14,6 @@ namespace Services.Shopkeeper
 
         public Task<ApiPostResponse<int>> RegisterShop(RegistrationModel regData);
         public Task<List<ImageModel>> GetShopImageById(string id);
+        public Task<List<ShopDetailsById>> GetShopsDetailsBylocation(Location location);
     }
 }

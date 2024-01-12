@@ -181,6 +181,11 @@ namespace Services.User
             forgot.Type = 2;
             return await _accountRepository.ForgotPasswordAndVerifyEmail(forgot); 
         }
+        public async Task<Message> ValidateOtp(ForgotPasswordAndVerifyEmail forgot)
+        {
+            forgot.Type = 3;
+            return await _accountRepository.ForgotPasswordAndVerifyEmail(forgot);
+        }
         public TokenModel GetUserTokenData(string jwtToken = null)
         {
             string Token = string.Empty;
@@ -307,6 +312,7 @@ namespace Services.User
             }
         }
         #endregion
+
         #region Request Insert
         public async Task<ApiPostResponse<string>> InsertRequest(InsertRequestmodel req)
         {
@@ -352,6 +358,7 @@ namespace Services.User
             return response;
         }
         #endregion
+
         #region RequestStatus
 
         public async Task<ApiPostResponse<List<statusModel>>> RequestStauts(string requestId)
@@ -386,6 +393,7 @@ namespace Services.User
         }
         #endregion
 
+
         #region GetUserAddress
         public async Task<ApiPostResponse<List<GetAddress>>> GetUserAddreess(string userId)
         {
@@ -404,6 +412,7 @@ namespace Services.User
             return response;
         }
         #endregion
+
         public async Task<List<TopBrands>> GetShopBrandsAsync()
         {
             return await _accountRepository.GetShopBrandsAsync();

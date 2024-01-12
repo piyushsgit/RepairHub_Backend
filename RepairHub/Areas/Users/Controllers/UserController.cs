@@ -35,10 +35,15 @@ namespace RepairHub.Areas.Users.Controllers
             return await UserService.AdminLogin(login);
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<OtpVerificationResponse> GenereateOtpForContact(string ContactNo)
         {
             return await UserService.Generateopt(ContactNo, null);
+        }
+        [HttpPost]
+        public async Task<Message> ValidateOtp(ForgotPasswordAndVerifyEmail forgot)
+        {
+            return await UserService.ValidateOtp(forgot);
         }
 
         [HttpPost]
@@ -59,7 +64,7 @@ namespace RepairHub.Areas.Users.Controllers
             return await UserService.RegisterUser(regData);
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<OtpVerificationResponse> SendOtpForEmailVerification(string EmailId)
         {
             var email = new Email();
@@ -67,7 +72,7 @@ namespace RepairHub.Areas.Users.Controllers
             email.EmailId = EmailId;
             return await UserService.Generateopt(null, email);
         }
-        [HttpPost]
+        [HttpGet]
         public async Task<OtpVerificationResponse> SendOtpForForgotPassword(string EmailId)
         {
             var email = new Email();
@@ -75,7 +80,7 @@ namespace RepairHub.Areas.Users.Controllers
             email.EmailId = EmailId;
             return await UserService.Generateopt(null, email);
         }
-        [HttpPost]
+        [HttpGet]
         public async Task<OtpVerificationResponse> SendOtpForChangePassword(string EmailId)
         {
             var email = new Email();

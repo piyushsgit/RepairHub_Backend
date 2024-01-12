@@ -12,6 +12,7 @@ namespace Services.User
         public Task<OtpVerificationResponse> Generateopt(string? ContactNo, Email? req);
         public Task<Message> VerifyEmail(ForgotPasswordAndVerifyEmail forgot);
         public Task<Message> ForgotPassword(ForgotPasswordAndVerifyEmail forgot);
+        public Task<Message> ValidateOtp(ForgotPasswordAndVerifyEmail forgot);
         public TokenModel GetUserTokenData(string jwtToken = null);
 
         public Task<ApiPostResponse<int>> RegisterUser(RegistrationUserModel regData);

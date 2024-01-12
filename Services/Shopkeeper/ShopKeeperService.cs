@@ -6,6 +6,7 @@ using Model.UsersModels;
 using Org.BouncyCastle.Ocsp;
 using Repository.Shopkeeper;
 using Repository.User;
+using System.Collections.Generic;
 using static Model.ShopDetails.ShopModels;
 
 namespace Services.Shopkeeper
@@ -75,9 +76,7 @@ namespace Services.Shopkeeper
 
             return response;
 
-        }
-
-
+        } 
         private async Task<string> SaveImageAsync(IFormFile image, string uploadsFolder)
         {
             if (image == null)
@@ -100,5 +99,25 @@ namespace Services.Shopkeeper
             var decryptId = Convert.ToInt32(StaticMethods.GetDecrypt(id));
             return await shopkeeperRepo.GetShopImageById(decryptId);
         }
+        public async Task<List<ShopDetailsById>> GetShopsDetailsBylocation(Location location)
+        {
+            List<ShopDetailsById> data = await shopkeeperRepo.GetShopsDetailsBylocation(location);
+
+            data.ForEach(item => item.EncryptedId = StaticMethods.GetEncrypt(item.Id.ToString()));
+            foreach (var shopDetails in data)
+            {
+                if (!string.IsNullOrEmpty(shopDetails.ImageNames))
+                {
+                    shopDetails.Images = shopDetails.ImageNames
+                        .Split(',',','+' ')
+                        .Select(imageName => new Image { ImageName = imageName })
+                        .ToArray();
+                }
+            }
+
+            return data;
+        }
+
+
     }
 }

@@ -9,5 +9,6 @@ namespace Repository.Shopkeeper
 
         public Task<ShopDetailsById> GetShopDetailsById(long id);
         public Task<List<ImageModel>> GetShopImageById(long id);
+        public Task<List<ShopDetailsById>> GetShopsDetailsBylocation(Location location);
     }
 }
