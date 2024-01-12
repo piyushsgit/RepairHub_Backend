@@ -1,4 +1,5 @@
-﻿using Services.Shopkeeper;
+﻿using Services.ManageRealtime;
+using Services.Shopkeeper;
 using Services.User;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,8 @@ namespace Services
             var dataDictionary = new Dictionary<Type, Type>
             {
                  {typeof(IUserService), typeof(UserService)},
-                {typeof(IShopKeeperService), typeof(ShopKeeperService)}
+                {typeof(IShopKeeperService), typeof(ShopKeeperService)},
+                {typeof(IManageRequestService),typeof(ManageRequestService) }
             };
             return dataDictionary;
         }

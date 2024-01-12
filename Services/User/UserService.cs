@@ -17,14 +17,22 @@ using Repository.User;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+
+using Org.BouncyCastle.Ocsp;
+using Model.dbModels;
+using Model.ShopDetails;
+using Model.RequestModel;
+using Microsoft.AspNetCore.Http;
+
+
 namespace Services.User
 {
     public class UserService : IUserService
     {
-        private IUserRepository _accountRepository;
+        private readonly IUserRepository _accountRepository;
         private readonly INonStaticCommonMethods _nonStatic;
         private readonly IHttpContextAccessor httpContextAccessor;
-        public IConfiguration _connectionString;
+        public  readonly IConfiguration _connectionString;
 
         #region Constructors
         public UserService(IConfiguration connection, IUserRepository accountRepository, INonStaticCommonMethods nonStatic, IHttpContextAccessor HttpContextAccessor)
@@ -241,7 +249,7 @@ namespace Services.User
             string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "ProfileImages");
             regData.ProfileImage = await StaticMethods.SaveImageAsync(regData.image, uploadsFolder);
 
-            RegistrationModel model = new RegistrationModel()
+            RegistrationModel model = new()
             {
                 FirstName = regData.FirstName,
                 LastName = regData.LastName,
@@ -270,7 +278,16 @@ namespace Services.User
         }
         public async Task<List<ShopDetails>> GetFilterShopAsync(string FilterType, int Rating, int PageSize, int PageNumber)
         {
-            return await _accountRepository.GetFilterShopAsync(FilterType, Rating, PageSize, PageNumber);
+
+            var items = await _accountRepository.GetFilterShopAsync(FilterType, Rating, PageSize, PageNumber);
+
+            for (var i = 0; i < items.Count; i++)
+            {
+                items[i].EntryptId = StaticMethods.GetEncrypt(items[i].Id.ToString());
+
+            }
+            return items;
+
         }
         public async Task<List<ShopTypes>> GetShopTypeAsync()
         {
@@ -280,8 +297,9 @@ namespace Services.User
         public async Task<ApiPostResponse<LoginModelResponse>> SignInGoogle(SignInGoogle userLogin)
         {
             var res = new ApiPostResponse<LoginModelResponse>();
-            var roll ="";
+            var roll = "";
             var data = await _accountRepository.SignInGoogle(userLogin);
+            
             if (data.UserTypeId == 2)
                 roll = Rolls.Shopkeeper;
             else if (data.UserTypeId == 3)
@@ -294,10 +312,11 @@ namespace Services.User
             }
             else
             {
+                var encryptUserId = StaticMethods.GetEncrypt(data.Id.ToString());
                 res.Data = new LoginModelResponse
                 {
+                    EncryptedId = encryptUserId,
                     JwdToken = GenerateJwtToken(userLogin.Email, roll),
-                    Id = data.Id,
                     UserTypeId = data.UserTypeId,
                     tokenExpiration = DateTime.UtcNow.AddMinutes(Convert.ToInt32(_nonStatic.GetConfigurationValue(AppSettingsJason.JwtToken.TimeOutMin))),
                     EmailId = data.EmailId,
@@ -312,52 +331,13 @@ namespace Services.User
             }
         }
         #endregion
-
         #region Request Insert
         public async Task<ApiPostResponse<string>> InsertRequest(InsertRequestmodel req)
         {
             ApiPostResponse<string> response = new ApiPostResponse<string>();
 
-            if (req == null || req.RequestImage == null || req.RequestImage.Length == 0)
-            {
-                response.Success = false;
-                return response;
-            }
 
-
-            List<string> encryptedRequestFilePaths = new List<string>();
-            // Define the directory path where you want to save the images
-            string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "RequestImages");
-
-            foreach (var requestImage in req.RequestImage)
-            {
-                string encryptedRequestFilePath = await StaticMethods.SaveImageAsync(requestImage, uploadsFolder);
-
-                if (encryptedRequestFilePath != null)
-                {
-                    encryptedRequestFilePaths.Add(encryptedRequestFilePath);
-                }
-            }
-            req.RequestImageName = encryptedRequestFilePaths;
-            // Check if an image is uploaded
-
-            var result = await _accountRepository.InsertRequest(req);
-
-            if (result != null)
-            {
-                string id = StaticMethods.GetEncrypt(result.RequestId.ToString());
-                response.Data = id;
-                response.Success = true;
-                response.Message = ErrorMessages.RequestGenrated;
-            }
-            else
-            {
-                response.Success = false;
-                response.Message = ErrorMessages.FailToGenerateRequest;
-            }
-            return response;
-        }
-        #endregion
+      
 
         #region RequestStatus
 
@@ -397,7 +377,7 @@ namespace Services.User
         #region GetUserAddress
         public async Task<ApiPostResponse<List<GetAddress>>> GetUserAddreess(string userId)
         {
-            ApiPostResponse<List<GetAddress>> response = new ApiPostResponse<List<GetAddress>>();
+            ApiPostResponse<List<GetAddress>> response = new ();
             int parsedUserId = Convert.ToInt32(userId);
             var data = await _accountRepository.GetUserAddreess(parsedUserId);
 
@@ -413,6 +393,7 @@ namespace Services.User
         }
         #endregion
 
+        #region Search
         public async Task<List<TopBrands>> GetShopBrandsAsync()
         {
             return await _accountRepository.GetShopBrandsAsync();
@@ -427,15 +408,16 @@ namespace Services.User
             }
             return data;
         }
+        #endregion
 
         #region AddUpdateAddress
         public async Task<ApiPostResponse<int>> InsertAddress(AddressInsertModel address)
         {
             ApiPostResponse<int> response = new ApiPostResponse<int>();
-            
+
             var data = await _accountRepository.InsertAddress(address);
 
-            if (data ==1)
+            if (data == 1)
             {
                 response.Data = data; response.Success = true; response.Message = ErrorMessages.Success;
             }
@@ -446,5 +428,51 @@ namespace Services.User
             return response;
         }
         #endregion
+
+
+        #region  uploadImage
+        public async Task<ApiPostResponse<List<string>>> UploadImages(IFormFile[] images)
+        {
+            ApiPostResponse<List<string>> response = new ApiPostResponse<List<string>>();
+
+            if (images == null || images.Length == 0)
+            {
+                response.Success = false;
+                return response;
+            }
+
+
+            List<string> encryptedRequestFilePaths = new List<string>();
+            // Define the directory path where you want to save the images
+            string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "RequestImages");
+
+            foreach (var requestImage in images)
+            {
+                string encryptedRequestFilePath = await StaticMethods.SaveImageAsync(requestImage, uploadsFolder);
+
+                if (encryptedRequestFilePath != null)
+                {
+                    encryptedRequestFilePaths.Add(encryptedRequestFilePath);
+                }
+            }
+            
+            if(encryptedRequestFilePaths.Count > 0)
+            {
+                response.Success = true;
+                response.Data = encryptedRequestFilePaths;
+                response.Message = "ImageUploadSuuccessfully";
+            }
+            else
+            {
+                response.Success = false;
+            }
+             return response;
+        }
+
+          
+
+        #endregion
     }
 }
+
+

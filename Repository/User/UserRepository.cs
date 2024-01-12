@@ -149,22 +149,7 @@ namespace Repository.User
 
         }
 
-        public async Task<InsertRequestResponsemodel> InsertRequest(InsertRequestmodel req)
-        {
-            var parameters = new DynamicParameters();
-            parameters.Add("@UserId", req.UserId);
-            parameters.Add("@ShopId", req.ShopId);
-            parameters.Add("@Description", req.Description);
-            parameters.Add("@UserAddressId", req.UserAddressId);
-            parameters.Add("@CreatedBy", req.CreatedBy);
-            parameters.Add("@RequestImageList", string.Join(",", req.RequestImageName));
-
-
-
-            return await QueryFirstOrDefaultAsync<InsertRequestResponsemodel>("InsertRequest", parameters, commandType: CommandType.StoredProcedure);
-
-
-        }
+        
         public async Task<List<statusModel>> RequestStauts(int requestId)
         {
             var parameters = new DynamicParameters();
@@ -201,7 +186,7 @@ namespace Repository.User
             return await ExecuteAsync<int>("UpdateInsertAddress", parameters, commandType: CommandType.StoredProcedure);
         }
 
-
+    
 
     }
 }

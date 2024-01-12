@@ -1,6 +1,7 @@
 ﻿using Common.CommonMethods;
 using Common.Helper;
 using Microsoft.AspNetCore.Http;
+using Model.CaseRequestResponse;
 using Model.ShopDetails;
 using Model.UsersModels;
 using Org.BouncyCastle.Ocsp;
@@ -33,7 +34,7 @@ namespace Services.Shopkeeper
         }
         public async Task<ApiPostResponse<int>> RegisterShop(RegistrationModel regData)
         {
-            ApiPostResponse<int> response = new ApiPostResponse<int>();
+            ApiPostResponse<int> response = new ();
 
             string profileUploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "ProfileImages");
             regData.ProfileImage = await StaticMethods.SaveImageAsync(regData.image, profileUploadsFolder);
@@ -44,7 +45,7 @@ namespace Services.Shopkeeper
                 response.Success = false;
                 return response;
             }
-            List<string> encryptedShopFilePaths = new List<string>();
+            List<string> encryptedShopFilePaths = new ();
 
             string shopUploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "ShopImages");
 
@@ -98,6 +99,62 @@ namespace Services.Shopkeeper
         {
             var decryptId = Convert.ToInt32(StaticMethods.GetDecrypt(id));
             return await shopkeeperRepo.GetShopImageById(decryptId);
+        }
+        public async Task<ApiPostResponse<List<RequestResponsemodel>>> GetShopRequests(ShopRequestQueryModel req)
+        {
+            ApiPostResponse<List<RequestResponsemodel>> response = new();
+            
+            if(req.UserId!=null)
+            {
+                req.DecryptUserId =Convert.ToInt32( StaticMethods.GetDecrypt(req.UserId));
+
+                var results = await shopkeeperRepo.GetShopRequests(req);
+
+                if (results != null && results.Count > 0)
+                {
+                    foreach (var result in results)
+                    {
+                        result.EncryptRequstId = StaticMethods.GetEncrypt(result.RequestId.ToString());
+                        result.RequestId = 0;
+                    }
+
+                    response.Data = results;
+                    response.Success = true;
+                    response.Message = ErrorMessages.Success;
+                }
+                else
+                {
+                    response.Success=false;
+                    response.Message = ErrorMessages.Error;
+                }
+            }
+            else
+            {
+                response.Success=false;
+                response.Message=ErrorMessages.Error;
+            }
+            return response;
+        }
+
+        public async Task<ApiPostResponse<RequestResponsemodel>> GetCaseInfo(string caseId)
+        {
+            ApiPostResponse<RequestResponsemodel> response = new();
+            RequestResponsemodel data = await shopkeeperRepo.GetCaseInfo(Convert.ToInt32(StaticMethods.GetDecrypt(caseId)));
+            if (data != null)
+            {
+                data.EncryptRequstId = caseId;
+                data.UserId =StaticMethods.GetEncrypt(data.UserId); 
+                data.RequestId = 0;
+                response.Data = data;
+                response.Success = true;
+                response.Message= ErrorMessages.Success;
+            }
+            else
+            {
+                response.Success=false;
+                response.Message = ErrorMessages.Error;
+            }
+            return response;
         }
         public async Task<List<ShopDetailsById>> GetShopsDetailsBylocation(Location location)
         {

@@ -18,6 +18,9 @@
         public const string GetBrands = "SelectTopBrands";
         public const string GetSearchData = "SearchShops1";
         public const string GetShopsByLocation = "[getShopDetailsbyLocationOrRatting]";
+        public const string GetShopAllRequest = "GetShopAllRequest";
+        public const string GetCaseInfo = "GetCaseInfo";
+        
 
 
         #endregion

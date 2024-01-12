@@ -2,8 +2,11 @@
 using Common.Helper;
 using Dapper;
 using Data;
+using Model.CaseRequestResponse;
 using Model.ShopDetails;
 using System.Data;
+using System.Data.Common;
+using System.Runtime.Intrinsics.Arm;
 using static Model.ShopDetails.ShopModels;
 
 namespace Repository.Shopkeeper
@@ -34,6 +37,38 @@ namespace Repository.Shopkeeper
             return result.ToList();
         }
 
+        public async Task<List<RequestResponsemodel>> GetShopRequests(ShopRequestQueryModel req)
+        {
+            DynamicParameters parameters = new();
+            parameters.Add("@UserId", req.DecryptUserId);
+            parameters.Add("@Search", req.Search);
+            parameters.Add("@OrderBy", req.OrderBy);
+            parameters.Add("@PageSize", req.PageSize);
+            parameters.Add("@PageNumber", req.PageNumber);
+
+            var result = await QueryAsync<RequestResponsemodel>(StoreProcedures.GetShopAllRequest, parameters, commandType: CommandType.StoredProcedure);
+            return result.ToList();
+
+        }
+
+        public async Task<RequestResponsemodel> GetCaseInfo(long caseId)
+        {
+            DynamicParameters dp = new();
+            dp.Add("@caseId", caseId);
+            var result = await QueryFirstOrDefaultAsync<RequestResponsemodel>(StoreProcedures.GetCaseInfo, dp, commandType: CommandType.StoredProcedure);
+
+            if (!string.IsNullOrEmpty(result.CaseImage))
+            {
+                result.CaseImages = result.CaseImage.Split(',').ToList();
+                result.CaseImage = null;
+
+            }
+
+            return result;
+        }
+
+
+    }
         public async Task<List<ShopDetailsById>> GetShopsDetailsBylocation(Location location)
         {
             var dp = new DynamicParameters();
@@ -45,4 +80,5 @@ namespace Repository.Shopkeeper
         }
     }
 }
-    
+
+
