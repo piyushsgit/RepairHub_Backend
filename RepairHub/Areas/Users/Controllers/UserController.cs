@@ -7,6 +7,7 @@ using Services.User;
 using System.Web.Http;
 using HttpGetAttribute = Microsoft.AspNetCore.Mvc.HttpGetAttribute;
 using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
+
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 
@@ -27,7 +28,7 @@ namespace RepairHub.Areas.Users.Controllers
         [HttpPost]
         public async  Task<ApiPostResponse<LoginModelResponse>> LoginWithContact(LoginWithContact login)
         {
-            return await UserService.Loginuser(login);
+            return await UserService.LoginWithContact(login);
         }
 
         [HttpPost]
@@ -42,9 +43,15 @@ namespace RepairHub.Areas.Users.Controllers
             return await UserService.Generateopt(ContactNo, null);
         }
 
+        [HttpPost]
+        public async Task<Message> VerifyEmail(ForgotPasswordAndVerifyEmail Verify)
+        {
+            return await UserService.VerifyEmail(Verify);
+        }
+
 
         [HttpPost]
-        public async Task<Message> ForgotPassword(ForgotPassword forgot)
+        public async Task<Message> ForgotPassword(ForgotPasswordAndVerifyEmail forgot)
         {
             return await UserService.ForgotPassword(forgot);
         }
@@ -75,7 +82,7 @@ namespace RepairHub.Areas.Users.Controllers
         [HttpPost]
         public async Task<OtpVerificationResponse> SendOtpForChangePassword(string EmailId)
         {
-            var email = new Email();
+            Email email = new();
             email.type = 3;
             email.EmailId = EmailId;
             return await UserService.Generateopt(null, email);
@@ -99,11 +106,11 @@ namespace RepairHub.Areas.Users.Controllers
         {
             return Ok(await UserService.GetShopTypeAsync());
         }
-        [HttpPost]
-        public async Task<ApiPostResponse<string>> InsertRequest([FromForm] InsertRequestmodel req)
-        {
-            return await UserService.InsertRequest(req);
-        }
+        //[HttpPost]
+        //public async Task<ApiPostResponse<string>> InsertRequest([FromForm] InsertRequestmodel req)
+        //{
+        //    return await UserService.InsertRequest(req);
+        //}
         [HttpGet]
         public async Task<ApiPostResponse<List<statusModel>>> RequestStaus(string request)
         {

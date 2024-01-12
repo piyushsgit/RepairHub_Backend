@@ -5,15 +5,17 @@ using Model.UsersModels;
 using Microsoft.AspNetCore.Authorization;
 
 using Services.Shopkeeper;
- 
+
 using static Model.ShopDetails.ShopModels;
 using HttpGetAttribute = Microsoft.AspNetCore.Mvc.HttpGetAttribute;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 using Services.User;
+using Common.CommonMethods;
+using Model.CaseRequestResponse;
 
 namespace RepairHub.Areas.ShopKeeper.Controllers
 {
-    [Authorize(Roles="Admin")]
+
     [Route("api/Shopkeeper/[controller]/[Action]")]
     [ApiController]
     public class ShopKeeperController : ControllerBase
@@ -49,5 +51,21 @@ namespace RepairHub.Areas.ShopKeeper.Controllers
         {
             return Ok(await shopKeeperService.GetShopImageById(id));
         }
+        [HttpGet]
+        public   string getEncrypt(string value)
+        {
+            return StaticMethods.GetEncrypt(value);
+        }
+        [HttpPost]
+        public async Task<ApiPostResponse<List<RequestResponsemodel>>> GetAllShopRequest(ShopRequestQueryModel req)
+        {
+            return await shopKeeperService.GetShopRequests(req);
+        }
+        [HttpGet]
+        public async Task<ApiPostResponse<RequestResponsemodel>> GetCaseInfo(string caseId)
+        {
+            return await shopKeeperService.GetCaseInfo(caseId);
+        }
+
     }
 }

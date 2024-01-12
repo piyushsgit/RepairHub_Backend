@@ -1,17 +1,26 @@
-﻿using System.Security.Cryptography;
+﻿using Common.CommonMethods;
+using Model.AppSettingsJason;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace SGBSystem.Common.Helpers
 {
     public class EncryptionDecryption
     {
+        private readonly INonStaticCommonMethods _nonStatic;
+        public EncryptionDecryption(INonStaticCommonMethods nonStaticCommon)
+        {
+            _nonStatic = nonStaticCommon;
+        }
         #region Variable Declaration
 
         /// <summary>
         /// key String
         /// </summary>
-        //private static string keyString = "09TSITUS-AARH-JMBM-2BOB-26OVN1983BYE";
-        private static string keyString = "EA34FF3E-6DF2-4551-B59E-BB81D9564426";
+        private static string keyString = "09tsitus-aarh-jmbm-2bob-26ovn1983bye";
+        //private static string keyString = _nonStatic.GetConfigurationValue(AppSettingsJason.JwtToken.SecreatKey);
+
+
 
         #endregion
 

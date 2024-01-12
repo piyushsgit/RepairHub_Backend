@@ -3,13 +3,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using RepairHub;
- 
+using RepairHub; 
 using RepairHub.Areas.Realtime.ManageRequest;
-using Services;
- 
-using SGBSystem.Middleware;
- 
+using RepairHub.Middleware; 
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System.Data;
 using System.Text;
@@ -24,8 +20,7 @@ builder.Services.DataRegisters();
 builder.Services.AddControllers();
 builder.Services.AddSignalR();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-
-
+ 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllRequests", builder =>

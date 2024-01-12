@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Net.Http.Headers;
 using Model.UsersModels;
+using RepairHub.Middleware;
 using Services.User;
-using SGBSystem.Middleware;
+ 
 
-namespace SGBSystem.Middleware
+namespace RepairHub.Middleware
 {
     public class CustomMiddleware
     {

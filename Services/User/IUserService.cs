@@ -9,10 +9,11 @@ namespace Services.User
 {
     public interface IUserService
     {
-        public Task<ApiPostResponse<LoginModelResponse>> Loginuser(LoginWithContact model);
+        public Task<ApiPostResponse<LoginModelResponse>> LoginWithContact(LoginWithContact model);
         public Task<ApiPostResponse<LoginModelResponse>> AdminLogin(LoginWithEmail model);
         public Task<OtpVerificationResponse> Generateopt(string? ContactNo, Email? req);
-        public Task<Message> ForgotPassword(ForgotPassword forgot);
+        public Task<Message> VerifyEmail(ForgotPasswordAndVerifyEmail forgot);
+        public Task<Message> ForgotPassword(ForgotPasswordAndVerifyEmail forgot);
         public TokenModel GetUserTokenData(string jwtToken = null);
 
         public Task<ApiPostResponse<int>> RegisterUser(RegistrationUserModel regData);
@@ -26,7 +27,7 @@ namespace Services.User
        
 
         public Task<ApiPostResponse<LoginModelResponse>> SignInGoogle(SignInGoogle userLogin);
-        public Task<ApiPostResponse<string>> InsertRequest(InsertRequestmodel req);
+        
 
         public Task<ApiPostResponse<List<statusModel>>> RequestStauts(string requestId);
         public  Task<ApiPostResponse< List<GetAddress>>> GetUserAddreess(string userId);

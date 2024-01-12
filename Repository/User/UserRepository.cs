@@ -50,13 +50,12 @@ namespace Repository.User
             return await QueryFirstOrDefaultAsync<OtpVerificationResponse>(StoreProcedures.GenerateOtp, param, commandType: CommandType.StoredProcedure);
         }
 
-
-        public async Task<Message> ForgotPassword(ForgotPassword forgot)
+      
+        public async Task<Message> ForgotPasswordAndVerifyEmail(ForgotPasswordAndVerifyEmail forgot)
         {
             var param = new DynamicParameters();
             param.Add("@Type", forgot.Type);
             param.Add("@Email", forgot.Email);
-            param.Add("@MobileNo", forgot.contact);
             param.Add("@OTP", forgot.Otp);
             param.Add("@NewPassword", forgot.NewPassword);
 
@@ -150,21 +149,7 @@ namespace Repository.User
 
         }
 
-        public async Task<InsertRequestResponsemodel> InsertRequest(InsertRequestmodel req)
-        {
-            var parameters = new DynamicParameters();
-            parameters.Add("@UserId", req.UserId);
-            parameters.Add("@ShopId", req.ShopId);
-            parameters.Add("@Description", req.Description);
-            parameters.Add("@UserAddressId", req.UserAddressId);
-            parameters.Add("@RequestImageList", string.Join(",", req.RequestImageName));
-
-
-
-            return await QueryFirstOrDefaultAsync<InsertRequestResponsemodel>("InsertRequest", parameters, commandType: CommandType.StoredProcedure);
-
-
-        }
+        
         public async Task<List<statusModel>> RequestStauts(int requestId)
         {
             var parameters = new DynamicParameters();
@@ -201,7 +186,7 @@ namespace Repository.User
             return await ExecuteAsync<int>("UpdateInsertAddress", parameters, commandType: CommandType.StoredProcedure);
         }
 
-
+    
 
     }
 }

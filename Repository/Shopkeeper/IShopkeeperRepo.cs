@@ -1,4 +1,6 @@
-﻿using Model.ShopDetails;
+﻿using Common.Helper;
+using Model.CaseRequestResponse;
+using Model.ShopDetails;
 using static Model.ShopDetails.ShopModels;
 
 namespace Repository.Shopkeeper
@@ -9,5 +11,7 @@ namespace Repository.Shopkeeper
 
         public Task<ShopDetailsById> GetShopDetailsById(long id);
         public Task<List<ImageModel>> GetShopImageById(long id);
+        public Task<List<RequestResponsemodel>> GetShopRequests(ShopRequestQueryModel req);
+        public Task<RequestResponsemodel> GetCaseInfo(long caseId);
     }
 }
